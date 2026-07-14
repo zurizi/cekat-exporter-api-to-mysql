@@ -16,6 +16,7 @@ const RATE_LIMIT_DELAY_MS = Number(process.env.RATE_LIMIT_DELAY_MS || 60000);
 const IMPORT_DERIVED_DETAILS = process.env.IMPORT_DERIVED_DETAILS === "1";
 const IMPORT_MESSAGES_BY_CONVERSATION = process.env.IMPORT_MESSAGES_BY_CONVERSATION !== "0";
 const IMPORT_MODE = process.env.IMPORT_MODE || "all";
+const MESSAGE_REQUEST_DELAY_MS = Number(process.env.MESSAGE_REQUEST_DELAY_MS || REQUEST_DELAY_MS);
 
 const TABLES = [
   "businesses",
@@ -81,6 +82,18 @@ function trimTrailingSlash(value) {
 
 function sleep(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
+function formatDuration(ms) {
+  const totalSeconds = Math.ceil(ms / 1000);
+  const hours = Math.floor(totalSeconds / 3600);
+  const minutes = Math.floor((totalSeconds % 3600) / 60);
+  const seconds = totalSeconds % 60;
+  const parts = [];
+  if (hours) parts.push(`${hours}h`);
+  if (minutes) parts.push(`${minutes}m`);
+  if (seconds || parts.length === 0) parts.push(`${seconds}s`);
+  return parts.join(" ");
 }
 
 function sqlString(value) {
@@ -1324,9 +1337,9 @@ function messageByConversationConfigs() {
     configs.push({
       key: `messages_by_conversation:${id}`,
       table: "messages",
-      path: "/api/messages",
+      path: "/messages",
       auth: "apikey",
-      paginated: true,
+      paginated: false,
       resumeProgress: true,
       query: {
         conversation_id: id,
@@ -1381,6 +1394,11 @@ async function main() {
     if (IMPORT_MODE === "messages_from_db") {
       await loadPendingConversationIdsForMessages();
       console.log(`[mode] messages_from_db pending_conversations=${resultCache.conversationIds.size}`);
+      console.log(
+        `[estimate] minimum_delay=${formatDuration(
+          resultCache.conversationIds.size * MESSAGE_REQUEST_DELAY_MS
+        )} (${MESSAGE_REQUEST_DELAY_MS}ms x ${resultCache.conversationIds.size} conversations, excluding API time and rate-limit waits)`
+      );
       for (const config of messageByConversationConfigs()) {
         console.log(`[import] ${config.key}`);
         const result = await importEndpoint(runId, config);
@@ -1390,7 +1408,7 @@ async function main() {
           console.warn("[rate-limit] stopping messages-by-conversation imports.");
           break;
         }
-        await sleep(REQUEST_DELAY_MS);
+        await sleep(MESSAGE_REQUEST_DELAY_MS);
       }
 
       const status = counts.failed > 0 ? "completed_with_errors" : "completed";
@@ -1419,7 +1437,7 @@ async function main() {
         console.warn("[rate-limit] stopping messages-by-conversation imports.");
         break;
       }
-      await sleep(REQUEST_DELAY_MS);
+      await sleep(MESSAGE_REQUEST_DELAY_MS);
     }
 
     const blockedDerivedPrefixes = new Set();

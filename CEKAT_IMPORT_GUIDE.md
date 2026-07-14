@@ -100,6 +100,8 @@ Kalau sering kena rate-limit, pakai mode lambat:
 
 Mode messages aman dijalankan berkali-kali. Script akan melanjutkan conversation yang belum tercatat sukses di `endpoint_results`. Jika proses putus di tengah page, script menyimpan posisi terakhir di `import_progress` dan tetap dedupe row yang sudah ada di tabel `messages`.
 
+Default mode `messages` memakai delay 5 detik per conversation. Saat mulai, script akan mencetak estimasi minimum durasi berdasarkan jumlah pending conversation, belum termasuk waktu response API dan jeda retry rate-limit.
+
 ## Cek Progres
 
 ```bash

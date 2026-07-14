@@ -98,6 +98,8 @@ Wrapper `run_cekat_import.sh` menyediakan mode:
 
 `messages` dan `slow-messages` aman dijalankan berulang. Script memakai tabel `endpoint_results` untuk mengetahui conversation mana yang sudah sukses diambil messages-nya. Jika proses putus di tengah page, script memakai `import_progress.current_page` sebagai titik resume dan tetap melakukan dedupe terhadap row yang sudah tersimpan.
 
+Default delay mode `messages` adalah 5 detik per conversation. Estimasi minimum durasi akan dicetak saat mode messages dimulai, di luar waktu response API dan jeda retry rate-limit.
+
 ## Database
 
 Default database:
@@ -193,7 +195,7 @@ LIMIT 20;
 - Endpoint messages yang dipakai:
 
 ```http
-GET /api/messages?conversation_id=<conversation_id>
+GET /messages?conversation_id=<conversation_id>
 ```
 
 - Import messages bisa kena API rate-limit karena request per conversation. Gunakan mode resume:

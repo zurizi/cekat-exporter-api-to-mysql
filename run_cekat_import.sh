@@ -64,7 +64,8 @@ case "$MODE" in
     require_file ".env"
     require_file "import_cekat_collection.js"
     IMPORT_MODE=messages_from_db \
-    REQUEST_DELAY_MS="${REQUEST_DELAY_MS:-3000}" \
+    REQUEST_DELAY_MS="${REQUEST_DELAY_MS:-1000}" \
+    MESSAGE_REQUEST_DELAY_MS="${MESSAGE_REQUEST_DELAY_MS:-5000}" \
     RATE_LIMIT_RETRIES="${RATE_LIMIT_RETRIES:-5}" \
     RATE_LIMIT_DELAY_MS="${RATE_LIMIT_DELAY_MS:-120000}" \
     node import_cekat_collection.js
@@ -74,7 +75,8 @@ case "$MODE" in
     require_file ".env"
     require_file "import_cekat_collection.js"
     IMPORT_MODE=messages_from_db \
-    REQUEST_DELAY_MS="${REQUEST_DELAY_MS:-8000}" \
+    REQUEST_DELAY_MS="${REQUEST_DELAY_MS:-1000}" \
+    MESSAGE_REQUEST_DELAY_MS="${MESSAGE_REQUEST_DELAY_MS:-8000}" \
     RATE_LIMIT_RETRIES="${RATE_LIMIT_RETRIES:-10}" \
     RATE_LIMIT_DELAY_MS="${RATE_LIMIT_DELAY_MS:-300000}" \
     node import_cekat_collection.js
