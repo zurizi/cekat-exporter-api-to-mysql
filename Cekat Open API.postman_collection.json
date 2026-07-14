@@ -1,0 +1,3126 @@
+{
+  "info": {
+    "_postman_id": "a549f970-9180-41ec-84b4-4030ef74ada4",
+    "name": "Cekat Open API",
+    "description": "Cekat Open API is designed to integrate your application with Cekat's features, such as creating WhatsApp message templates and sending WhatsApp messages. This API is specifically for integrating WhatsApp Business inboxes only.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "28390865"
+  },
+  "item": [
+    {
+      "name": "Business",
+      "item": [
+        {
+          "name": "Register Business",
+          "request": {
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "value",
+                  "value": "{{PARTNER_API_KEY}}",
+                  "type": "string"
+                },
+                {
+                  "key": "key",
+                  "value": "x-partner-api-key",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "key": "business_name",
+                  "value": "testing",
+                  "type": "text"
+                },
+                {
+                  "key": "email",
+                  "value": "testing@cekat.com",
+                  "type": "text"
+                },
+                {
+                  "key": "phone_number",
+                  "value": "6285695209520",
+                  "type": "text"
+                },
+                {
+                  "key": "password",
+                  "value": "123456",
+                  "type": "text"
+                },
+                {
+                  "key": "referral_code",
+                  "value": "orderonline",
+                  "type": "text"
+                },
+                {
+                  "key": "user_id",
+                  "value": "testing_id",
+                  "type": "text"
+                },
+                {
+                  "key": "personal_access_key",
+                  "value": "testing_access_key",
+                  "type": "text"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{OPENAPI_LOCAL_SERVER}}/register",
+              "host": [
+                "{{OPENAPI_LOCAL_SERVER}}"
+              ],
+              "path": [
+                "register"
+              ]
+            },
+            "description": "This endpoint allows you to register a new business and get cekat open api key.\n\n### Request Body\n\n``` json\n{\n  \"business_name\": \"business name\",\n  \"email\": \"business email\",\n  \"phone_number\": \"business phone number\",\n  \"password\": \"password\",\n  \"referral_code\": \"partner referral code\",\n  // below is for orderonline\n  \"user_id\": \"OO user ID\",\n  \"personal_access_key\": \"OO personal access key\"\n}\n\n ```\n\n### Response\n\nThe response is in JSON format and has the following schema:\n\n``` json\n{\n    \"success\": true,\n    \"status_code\": 201,\n    \"cekat_api_key\": \"string api key\"\n}\n\n ```"
+          },
+          "response": [
+            {
+              "name": "Register Business",
+              "originalRequest": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "urlencoded",
+                  "urlencoded": [
+                    {
+                      "key": "business_name",
+                      "value": "testing",
+                      "type": "text"
+                    },
+                    {
+                      "key": "email",
+                      "value": "testing@cekat.com",
+                      "type": "text"
+                    },
+                    {
+                      "key": "phone_number",
+                      "value": "6285695209520",
+                      "type": "text"
+                    },
+                    {
+                      "key": "password",
+                      "value": "123456",
+                      "type": "text"
+                    },
+                    {
+                      "key": "referral_code",
+                      "value": "orderonline",
+                      "type": "text"
+                    },
+                    {
+                      "key": "user_id",
+                      "value": "testing_id",
+                      "type": "text"
+                    },
+                    {
+                      "key": "personal_access_key",
+                      "value": "testing_access_key",
+                      "type": "text"
+                    }
+                  ]
+                },
+                "url": {
+                  "raw": "{{OPENAPI_LOCAL_SERVER}}/register",
+                  "host": [
+                    "{{OPENAPI_LOCAL_SERVER}}"
+                  ],
+                  "path": [
+                    "register"
+                  ]
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json",
+                  "description": "",
+                  "type": "text"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"success\": true,\n    \"status_code\": 201,\n    \"cekat_api_key\": \"string api key\"\n}"
+            }
+          ]
+        }
+      ],
+      "description": "User can register a business. After registering the business, user can also log in to the web chat at chat.cekat.ai by using the forget password feature. Through this API, user can also retrieve data of the registered businesses."
+    },
+    {
+      "name": "Inboxes",
+      "item": [
+        {
+          "name": "Inboxes",
+          "request": {
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "value",
+                  "value": "{{CEKAT_API_KEY}}",
+                  "type": "string"
+                },
+                {
+                  "key": "key",
+                  "value": "api_key",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{OPENAPI_LOCAL_SERVER}}/inboxes",
+              "host": [
+                "{{OPENAPI_LOCAL_SERVER}}"
+              ],
+              "path": [
+                "inboxes"
+              ]
+            },
+            "description": "### GET /inboxes\n\nThis endpoint retrieves a list of inboxes.\n\n#### Request\n\nThere are no request parameters for this endpoint.\n\n#### Response\n\nThe response is a JSON object with the following schema:\n\n``` json\n{\n    \"success\": true,\n    \"status_code\": 200,\n    \"data\": [\n        {\n            \"id\": \"\",\n            \"created_at\": \"2024-06-25T09:51:08.617927+00:00\",\n            \"business_id\": \"\",\n            \"name\": \"Cekat Development\",\n            \"description\": \"Description\",\n            \"phone_number\": \"628123456789\",\n            \"status\": \"active\",\n            \"ai_agent_id\": \"string or null\",\n            \"image_url\": \"string or null\",\n            \"type\": \"whatsapp\"\n        }\n    ]\n}\n\n ```\n\nThe response contains a boolean \"success\" flag, a \"status_code\" integer, and an array of \"data\" objects. Each \"data\" object represents an inbox with properties such as \"id\", \"created_at\", \"business_id\", \"name\", \"description\", \"phone_number\", \"status\", \"ai_agent_id\", \"image_url\", and \"type\"."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Templates",
+      "item": [
+        {
+          "name": "Template",
+          "request": {
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "value",
+                  "value": "{{CEKAT_API_KEY}}",
+                  "type": "string"
+                },
+                {
+                  "key": "key",
+                  "value": "api_key",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{OPENAPI_LOCAL_SERVER}}/templates",
+              "host": [
+                "{{OPENAPI_LOCAL_SERVER}}"
+              ],
+              "path": [
+                "templates"
+              ],
+              "query": [
+                {
+                  "key": "inbox_id",
+                  "value": "",
+                  "disabled": true
+                }
+              ]
+            },
+            "description": "### GET /templates\n\nThis endpoint retrieves templates associated with a specific business.\n\n#### Request\n\n- Method: GET\n    \n- URL: `{{OPENAPI_LOCAL_SERVER}}/templates`\n    \n- Query Parameters:\n    \n    - `inbox_id` (string, optional): The ID of the inbox for which templates are to be retrieved.\n        \n    - `status` (string, optional): The status which templates are to be retrieved.\n        \n\n#### Response\n\nThe response is a JSON object with the following schema:\n\n``` json\n{\n    \"success\": boolean,\n    \"status_code\": integer,\n    \"data\": [\n        {\n            \"id\": string,\n            \"created_at\": string,\n            \"body\": string,\n            \"wa_template_id\": string,\n            \"category\": string,\n            \"file_url\": string,\n            \"status\": string,\n            \"language\": string,\n            \"inbox_id\": string,\n            \"name\": string,\n            \"header_type\": string,\n            \"header\": string,\n            \"body_placeholder\": [string],\n            \"inbox\": {\n                \"id\": string,\n                \"name\": string,\n                \"type\": string,\n                \"status\": string,\n                \"business_id\": string\n            }\n        }\n    ]\n}\n\n ```\n\nThe `data` array contains objects representing individual templates, with each object containing various properties such as `id`, `created_at`, `body`, `wa_template_id`, `category`, `file_url`, `status`, `language`, `inbox_id`, `name`, `header_type`, `header`, `body_placeholder`, and `inbox` details."
+          },
+          "response": []
+        },
+        {
+          "name": "Template Sync",
+          "request": {
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "value",
+                  "value": "{{CEKAT_API_KEY}}",
+                  "type": "string"
+                },
+                {
+                  "key": "key",
+                  "value": "api_key",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{OPENAPI_LOCAL_SERVER}}/templates/sync?inbox_id={{inbox_id}}",
+              "host": [
+                "{{OPENAPI_LOCAL_SERVER}}"
+              ],
+              "path": [
+                "templates",
+                "sync"
+              ],
+              "query": [
+                {
+                  "key": "inbox_id",
+                  "value": "{{inbox_id}}"
+                }
+              ]
+            },
+            "description": "This endpoint allows you to send an HTTP POST request to synchronize WhatsApp templates from the Meta server to the Cekat server using the specified inbox ID. This synchronization is initiated when you want to add a template message from the Meta server. The request should include the inbox ID as a query parameter.\n\n### Request Body\n\nThis request does not require a request body.\n\n### Response Body\n\nThe response will be in JSON format with the following schema:\n\n``` json\n{\n    \"success\": true,\n    \"status_code\": 200\n}\n\n ```"
+          },
+          "response": []
+        },
+        {
+          "name": "Create template",
+          "request": {
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "value",
+                  "value": "{{CEKAT_API_KEY}}",
+                  "type": "string"
+                },
+                {
+                  "key": "key",
+                  "value": "api_key",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "name",
+                  "value": "tanya_kabarnya",
+                  "description": "(required) - The name of the template",
+                  "type": "text"
+                },
+                {
+                  "key": "category",
+                  "value": "MARKETING",
+                  "description": "(required) - \"AUTHENTICATION\", \"MARKETING\", or \"UTILITY\"",
+                  "type": "text"
+                },
+                {
+                  "key": "language",
+                  "value": "id",
+                  "description": "(required) - Language code, check our documentation",
+                  "type": "text"
+                },
+                {
+                  "key": "body",
+                  "value": "Halo {{1}}, kamu apa kabarnya? Semoga baik-baik aja ya",
+                  "description": "(required) - The body content of the template.",
+                  "type": "text"
+                },
+                {
+                  "key": "inbox_id",
+                  "value": "",
+                  "description": "(required) - The ID of the inbox associated with the template.",
+                  "type": "text"
+                },
+                {
+                  "key": "body_placeholder",
+                  "value": "[\"Jane\"]",
+                  "description": "(optional or required) - placeholder for body variable ",
+                  "type": "text"
+                },
+                {
+                  "key": "file",
+                  "description": "(optional) - format: jpeg, jpg, png",
+                  "type": "file",
+                  "fileNotInWorkingDirectoryWarning": "This file isn't in your working directory. Teammates you share this request with won't be able to use this file. To make collaboration easier you can setup your working directory in Settings.",
+                  "filesNotInWorkingDirectory": [
+                    "/Users/putriindahtresnawati/Downloads/happy-svgrepo-com 1.png"
+                  ],
+                  "src": "/Users/putriindahtresnawati/Downloads/happy-svgrepo-com 1.png",
+                  "disabled": true
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{OPENAPI_LOCAL_SERVER}}/templates",
+              "host": [
+                "{{OPENAPI_LOCAL_SERVER}}"
+              ],
+              "path": [
+                "templates"
+              ]
+            },
+            "description": "### Create Template\n\nThis endpoint allows the user to create a new template by making an HTTP POST request to the specified URL.\n\n#### Form-Data Parameters\n\n- `name`: (text, required) - The name of the template.\n    \n- `category`: (text, required) - The category of the template. The category must be one of the following: \"AUTHENTICATION\", \"MARKETING\", or \"UTILITY\". Typically, \"MARKETING\" is the most commonly used category.\n    \n- `language`: (text, required) - The language of the template. The language used should be a language code accepted by Meta, which includes the following:\n    \n    - Afrikaans: \"af\"\n        \n    - Albanian: \"sq\"\n        \n    - Arabic: \"ar\"\n        \n    - Azerbaijani: \"az\"\n        \n    - Bengali: \"bn\"\n        \n    - Bulgarian: \"bg\"\n        \n    - Catalan: \"ca\"\n        \n    - Chinese (CHN): \"zh_CN\"\n        \n    - Chinese (HKG): \"zh_HK\"\n        \n    - Chinese (TAI): \"zh_TW\"\n        \n    - Croatian: \"hr\"\n        \n    - Czech: \"cs\"\n        \n    - Danish: \"da\"\n        \n    - Dutch: \"nl\"\n        \n    - English: \"en\"\n        \n    - English (UK): \"en_GB\"\n        \n    - English (US): \"en_US\"\n        \n    - Estonian: \"et\"\n        \n    - Filipino: \"fil\"\n        \n    - Finnish: \"fi\"\n        \n    - French: \"fr\"\n        \n    - Georgian: \"ka\"\n        \n    - German: \"de\"\n        \n    - Greek: \"el\"\n        \n    - Gujarati: \"gu\"\n        \n    - Hausa: \"ha\"\n        \n    - Hebrew: \"he\"\n        \n    - Hindi: \"hi\"\n        \n    - Hungarian: \"hu\"\n        \n    - Indonesian: \"id\"\n        \n    - Irish: \"ga\"\n        \n    - Italian: \"it\"\n        \n    - Japanese: \"ja\"\n        \n    - Kannada: \"kn\"\n        \n    - Kazakh: \"kk\"\n        \n    - Kinyarwanda: \"rw_RW\"\n        \n    - Korean: \"ko\"\n        \n    - Kyrgyz (Kyrgyzstan): \"ky_KG\"\n        \n    - Lao: \"lo\"\n        \n    - Latvian: \"lv\"\n        \n    - Lithuanian: \"lt\"\n        \n    - Macedonian: \"mk\"\n        \n    - Malay: \"ms\"\n        \n    - Malayalam: \"ml\"\n        \n    - Marathi: \"mr\"\n        \n    - Norwegian: \"nb\"\n        \n    - Persian: \"fa\"\n        \n    - Polish: \"pl\"\n        \n    - Portuguese (BR): \"pt_BR\"\n        \n    - Portuguese (POR): \"pt_PT\"\n        \n    - Punjabi: \"pa\"\n        \n    - Romanian: \"ro\"\n        \n    - Russian: \"ru\"\n        \n    - Serbian: \"sr\"\n        \n    - Slovak: \"sk\"\n        \n    - Slovenian: \"sl\"\n        \n    - Spanish: \"es\"\n        \n    - Spanish (ARG): \"es_AR\"\n        \n    - Spanish (SPA): \"es_ES\"\n        \n    - Spanish (MEX): \"es_MX\"\n        \n    - Swahili: \"sw\"\n        \n    - Swedish: \"sv\"\n        \n    - Tamil: \"ta\"\n        \n    - Telugu: \"te\"\n        \n    - Thai: \"th\"\n        \n    - Turkish: \"tr\"\n        \n    - Ukrainian: \"uk\"\n        \n    - Urdu: \"ur\"\n        \n    - Uzbek: \"uz\"\n        \n    - Vietnamese: \"vi\"\n        \n    - Zulu: \"zu\"\n        \n- `body`: (text, required) - The body content of the template. To add variables with values that can be changed, use `{{1}}` for the first variable, `{{2}}` for the second variable, and so on.\n    \n    - body example with variables: \"Halo {{1}}, terima kasih sudah melihat toko kami. Saat ini sedang ada diskon {{2}}%\"\n        \n- `inbox_id`: (text, required) - The ID of the inbox associated with the template.\n    \n- `body_placeholder`: (text, required if body contains variables) - The placeholder values for the body content. If the template body contains variables, then `body_placeholder` becomes required. For example, if the body uses two variables, use a placeholder like `[\"Jane\", \"10\"]`.\n    \n- `file`: (file, optional) - The file to be uploaded for the template. Currently, only image file formats are accepted:\n    \n    - jpeg\n        \n    - jpg\n        \n    - png\n        \n\n#### Response\n\nThe response is in JSON format with the following schema:\n\n``` json\n{\n    \"success\": true,\n    \"status_code\": 201,\n    \"data\": [\n        {\n            \"id\": \"c814b87b-984c-4752-9ce5-0fa4917b80db\",\n            \"created_at\": \"2024-06-27T01:03:24.664357+00:00\",\n            \"body\": \"Halo {{1}}, terima kasih sudah melihat produk kami.\",\n            \"wa_template_id\": \"123456789\",\n            \"category\": \"MARKETING\",\n            \"file_url\": \"string or null\",\n            \"status\": \"PENDING\",\n            \"language\": \"id\",\n            \"inbox_id\": \"2824c651-57c9-43c1-8c8c-5d07dc40265b\",\n            \"name\": \"terima_kasih\",\n            \"header_type\": \"string or null,\n            \"header\": \"string or null,\n            \"body_placeholder\": [\n                \"Jane\"\n            ],\n            \"inbox\": {\n                \"id\": \"2824c651-57c9-43c1-8c8c-5d07dc40265b\",\n                \"name\": \"Cekat Development\",\n                \"type\": \"whatsapp\",\n                \"status\": \"active\",\n                \"business_id\": \"94879c90-d298-460f-8fb7-2b21b0916646\"\n            }\n        }\n    ]\n}\n\n ```"
+          },
+          "response": []
+        },
+        {
+          "name": "Delete template by wa_template_id",
+          "request": {
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "value",
+                  "value": "{{CEKAT_API_KEY}}",
+                  "type": "string"
+                },
+                {
+                  "key": "key",
+                  "value": "api_key",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{OPENAPI_LOCAL_SERVER}}/templates/{{wa_template_id}}",
+              "host": [
+                "{{OPENAPI_LOCAL_SERVER}}"
+              ],
+              "path": [
+                "templates",
+                "{{wa_template_id}}"
+              ]
+            },
+            "description": "### Delete Template\n\nThis endpoint is used to delete a specific template by providing its wa_template_id in the URL path.\n\n#### Request Body\n\nThis request does not require a request body.\n\n#### Response Body\n\nExample Response:\n\n``` json\n{\n    \"success\": true,\n    \"status_code\": 200\n}\n\n ```"
+          },
+          "response": []
+        },
+        {
+          "name": "Send template",
+          "request": {
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "value",
+                  "value": "{{CEKAT_API_KEY}}",
+                  "type": "string"
+                },
+                {
+                  "key": "key",
+                  "value": "api_key",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n        \"wa_template_id\": \"956322736884885\",\n        // \"template_body_variables\": [122111],\n        // \"otp_code\": \"552345\", //max 15 char for auth only\n        \"inbox_id\":\"535e57b7-7e84-4313-aac3-a33d910d86e4\",\n        \"phone_number\": \"6282214715759\",\n        \"phone_name\": \"Putri Cantik\",\n        // \"file_url\": \"https://files.cekat.ai/11_Loadcell_accuracy_2e57aJ.pdf\" // optional\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{OPENAPI_LOCAL_SERVER}}/templates/send",
+              "host": [
+                "{{OPENAPI_LOCAL_SERVER}}"
+              ],
+              "path": [
+                "templates",
+                "send"
+              ]
+            },
+            "description": "### Send Template\n\nThis endpoint allows you to send a template. Only template with status \"APPROVED\" will be proceed.\n\n#### Request Body\n\n- raw (application/json)\n    \n\n``` json\n{\n  \"wa_template_id\": \"\",\n  \"template_body_variables\": [],\n  \"inbox_id\": \"\",\n  \"otp_code\": \"\"\n  \"phone_number\": \"\",\n  \"phone_name\": \"\"\n}\n\n ```\n\n#### Response\n\nThe response of this request is a JSON schema with the following structure:\n\n``` json\n{\n    \"success\": true,\n    \"status_code\": 200,\n    \"data\": [\n        {\n            \"id\": \"\",\n            \"created_at\": \"\",\n            \"message\": \"\",\n            \"sent_by\": \"\",\n            \"status\": \"\",\n            \"conversation_id\": \"\",\n            \"media_url\": null,\n            \"media_type\": \"\",\n            \"is_deleted\": false,\n            \"token_usage\": null,\n            \"message_history\": null,\n            \"system_msg\": null\n        }\n    ]\n}\n\n ```"
+          },
+          "response": []
+        },
+        {
+          "name": "Send template Copy",
+          "request": {
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "value",
+                  "value": "{{CEKAT_API_KEY}}",
+                  "type": "string"
+                },
+                {
+                  "key": "key",
+                  "value": "api_key",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "// {\n//         \"wa_template_id\": \"\",\n//         // \"template_body_variables\": [\"Putri\"],\n//         // \"otp_code\": \"552345\", //max 15 char for auth only\n//         \"inbox_id\":\"\",\n//         \"phone_number\": \"\",\n//         \"phone_name\": \"\"\n//         // \"file_url\": \"https://files.cekat.ai/v09044g40000cu8ai5fog65qck6h2i40_C50duf_bvWLG3.mp4\" // optional\n// }\n\n{\n  \"wa_template_id\": \"9941043419347349\",\n//   \"template_body_variables\": [\n//     \"Ibu\", \"\"\n\n//   ],\n  \"inbox_id\": \"bb3619b2-db9f-4dea-adf0-c45f82f9cfdf\",\n  \"phone_number\": \"6282214715759\",\n  \"phone_name\": \"Putri Indah\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{OPENAPI_LOCAL_SERVER}}/templates/send",
+              "host": [
+                "{{OPENAPI_LOCAL_SERVER}}"
+              ],
+              "path": [
+                "templates",
+                "send"
+              ]
+            },
+            "description": "### Send Template\n\nThis endpoint allows you to send a template. Only template with status \"APPROVED\" will be proceed.\n\n#### Request Body\n\n- raw (application/json)\n    \n\n``` json\n{\n  \"wa_template_id\": \"\",\n  \"template_body_variables\": [],\n  \"inbox_id\": \"\",\n  \"otp_code\": \"\"\n  \"phone_number\": \"\",\n  \"phone_name\": \"\"\n}\n\n ```\n\n#### Response\n\nThe response of this request is a JSON schema with the following structure:\n\n``` json\n{\n    \"success\": true,\n    \"status_code\": 200,\n    \"data\": [\n        {\n            \"id\": \"\",\n            \"created_at\": \"\",\n            \"message\": \"\",\n            \"sent_by\": \"\",\n            \"status\": \"\",\n            \"conversation_id\": \"\",\n            \"media_url\": null,\n            \"media_type\": \"\",\n            \"is_deleted\": false,\n            \"token_usage\": null,\n            \"message_history\": null,\n            \"system_msg\": null\n        }\n    ]\n}\n\n ```"
+          },
+          "response": []
+        },
+        {
+          "name": "Send template Copy 2",
+          "request": {
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "value",
+                  "value": "{{CEKAT_API_KEY}}",
+                  "type": "string"
+                },
+                {
+                  "key": "key",
+                  "value": "api_key",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n        \"wa_template_id\": \"\",\n        // \"template_body_variables\": [\"Putri\"],\n        // \"otp_code\": \"552345\", //max 15 char for auth only\n        \"inbox_id\":\"\",\n        \"phone_number\": \"\",\n        \"phone_name\": \"\"\n        // \"file_url\": \"https://files.cekat.ai/v09044g40000cu8ai5fog65qck6h2i40_C50duf_bvWLG3.mp4\" // optional\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{OPENAPI_LOCAL_SERVER}}/templates/send",
+              "host": [
+                "{{OPENAPI_LOCAL_SERVER}}"
+              ],
+              "path": [
+                "templates",
+                "send"
+              ]
+            },
+            "description": "### Send Template\n\nThis endpoint allows you to send a template. Only template with status \"APPROVED\" will be proceed.\n\n#### Request Body\n\n- raw (application/json)\n    \n\n``` json\n{\n  \"wa_template_id\": \"\",\n  \"template_body_variables\": [],\n  \"inbox_id\": \"\",\n  \"otp_code\": \"\"\n  \"phone_number\": \"\",\n  \"phone_name\": \"\"\n}\n\n ```\n\n#### Response\n\nThe response of this request is a JSON schema with the following structure:\n\n``` json\n{\n    \"success\": true,\n    \"status_code\": 200,\n    \"data\": [\n        {\n            \"id\": \"\",\n            \"created_at\": \"\",\n            \"message\": \"\",\n            \"sent_by\": \"\",\n            \"status\": \"\",\n            \"conversation_id\": \"\",\n            \"media_url\": null,\n            \"media_type\": \"\",\n            \"is_deleted\": false,\n            \"token_usage\": null,\n            \"message_history\": null,\n            \"system_msg\": null\n        }\n    ]\n}\n\n ```"
+          },
+          "response": []
+        },
+        {
+          "name": "New Request",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": ""
+            }
+          },
+          "response": []
+        }
+      ],
+      "description": "whatsapp template"
+    },
+    {
+      "name": "integrations",
+      "item": [
+        {
+          "name": "integration",
+          "request": {
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "value",
+                  "value": "{{CEKAT_API_KEY}}",
+                  "type": "string"
+                },
+                {
+                  "key": "key",
+                  "value": "api_key",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{OPENAPI_LOCAL_SERVER}}/integrations",
+              "host": [
+                "{{OPENAPI_LOCAL_SERVER}}"
+              ],
+              "path": [
+                "integrations"
+              ]
+            },
+            "description": "### GET /inboxes\n\nThis endpoint retrieves a list of inboxes.\n\n#### Request\n\nThere are no request parameters for this endpoint.\n\n#### Response\n\nThe response is a JSON object with the following schema:\n\n``` json\n{\n    \"success\": true,\n    \"status_code\": 200,\n    \"data\": [\n        {\n            \"id\": \"\",\n            \"created_at\": \"2024-06-25T09:51:08.617927+00:00\",\n            \"business_id\": \"\",\n            \"name\": \"Cekat Development\",\n            \"description\": \"Description\",\n            \"phone_number\": \"628123456789\",\n            \"status\": \"active\",\n            \"ai_agent_id\": \"string or null\",\n            \"image_url\": \"string or null\",\n            \"type\": \"whatsapp\"\n        }\n    ]\n}\n\n ```\n\nThe response contains a boolean \"success\" flag, a \"status_code\" integer, and an array of \"data\" objects. Each \"data\" object represents an inbox with properties such as \"id\", \"created_at\", \"business_id\", \"name\", \"description\", \"phone_number\", \"status\", \"ai_agent_id\", \"image_url\", and \"type\"."
+          },
+          "response": []
+        },
+        {
+          "name": "integration",
+          "request": {
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "value",
+                  "value": "{{CEKAT_API_KEY}}",
+                  "type": "string"
+                },
+                {
+                  "key": "key",
+                  "value": "api_key",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{OPENAPI_LOCAL_SERVER}}/integrations/delete",
+              "host": [
+                "{{OPENAPI_LOCAL_SERVER}}"
+              ],
+              "path": [
+                "integrations",
+                "delete"
+              ]
+            },
+            "description": "### GET /inboxes\n\nThis endpoint retrieves a list of inboxes.\n\n#### Request\n\nThere are no request parameters for this endpoint.\n\n#### Response\n\nThe response is a JSON object with the following schema:\n\n``` json\n{\n    \"success\": true,\n    \"status_code\": 200,\n    \"data\": [\n        {\n            \"id\": \"\",\n            \"created_at\": \"2024-06-25T09:51:08.617927+00:00\",\n            \"business_id\": \"\",\n            \"name\": \"Cekat Development\",\n            \"description\": \"Description\",\n            \"phone_number\": \"628123456789\",\n            \"status\": \"active\",\n            \"ai_agent_id\": \"string or null\",\n            \"image_url\": \"string or null\",\n            \"type\": \"whatsapp\"\n        }\n    ]\n}\n\n ```\n\nThe response contains a boolean \"success\" flag, a \"status_code\" integer, and an array of \"data\" objects. Each \"data\" object represents an inbox with properties such as \"id\", \"created_at\", \"business_id\", \"name\", \"description\", \"phone_number\", \"status\", \"ai_agent_id\", \"image_url\", and \"type\"."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Messages",
+      "item": [
+        {
+          "name": "send wa message",
+          "request": {
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "value",
+                  "value": "{{CEKAT_API_KEY}}",
+                  "type": "string"
+                },
+                {
+                  "key": "key",
+                  "value": "api_key",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"conversation_id\": \"\",\n  \"receiver\": \"\",\n  \"message\": \"Haloooo bales dari api\",\n  \"media_type\": \"location\",\n  \"location\": {\n    \"latitude\": \"-6.2664324\",\n    \"longitude\": \"106.5917695\",\n    \"name\": \"Namam lokasi\",\n    \"address\": \"addresss lokasi\"\n  },\n  \"header\": {},\n  \"action\": {\n    \"name\": \"interactive_button\",\n    \"parameters\": {\n      \"display_text\": \"Chat Cust Service 12222\",\n      \"url\": \"test url\"\n    }\n  }\n}\n\n// {\n//   \"conversation_id\": \"767bae74-ef45-4e57-bf87-c46b1b51808d\",\n//   \"receiver\": \"6282214715759\",\n//   \"message\": \"Haloooo button 10\",\n//   \"media_type\": \"list\",\n//   \"header\": {},\n//   \"action\": {\n//     \"button\": \"text1\",\n//       \"sections\": [\n//         {\n//           \"title\": \"title1\",\n//           \"rows\": [\n//             {\n//               \"id\": \"1\",\n//               \"title\": \"row1\",\n//               \"description\": \"Desc 1\"\n//             }\n//           ]\n//         },\n//          {\n//           \"title\": \"title1\",\n//           \"rows\": [\n//             {\n//               \"id\": \"1\",\n//               \"title\": \"row1\",\n//               \"description\": \"Desc 1\"\n//             }\n//           ]\n//         },\n//          {\n//           \"title\": \"title1\",\n//           \"rows\": [\n//             {\n//               \"id\": \"1\",\n//               \"title\": \"row1\",\n//               \"description\": \"Desc 1\"\n//             }\n//           ]\n//         },{\n//           \"title\": \"title1\",\n//           \"rows\": [\n//             {\n//               \"id\": \"1\",\n//               \"title\": \"row1\",\n//               \"description\": \"Desc 1\"\n//             }\n//           ]\n//         },\n//         {\n//           \"title\": \"title1\",\n//           \"rows\": [\n//             {\n//               \"id\": \"1\",\n//               \"title\": \"row1\",\n//               \"description\": \"Desc 1\"\n//             }\n//           ]\n//         },\n//         {\n//           \"title\": \"title1\",\n//           \"rows\": [\n//             {\n//               \"id\": \"1\",\n//               \"title\": \"row1\",\n//               \"description\": \"Desc 1\"\n//             }\n//           ]\n//         },\n//         {\n//           \"title\": \"title1\",\n//           \"rows\": [\n//             {\n//               \"id\": \"1\",\n//               \"title\": \"row1\",\n//               \"description\": \"Desc 1\"\n//             }\n//           ]\n//         },\n//         {\n//           \"title\": \"title1\",\n//           \"rows\": [\n//             {\n//               \"id\": \"1\",\n//               \"title\": \"row1\",\n//               \"description\": \"Desc 1\"\n//             }\n//           ]\n//         },\n//         {\n//           \"title\": \"title1\",\n//           \"rows\": [\n//             {\n//               \"id\": \"1\",\n//               \"title\": \"row1\",\n//               \"description\": \"Desc 1\"\n//             }\n//           ]\n//         },\n//         {\n//           \"title\": \"title1\",\n//           \"rows\": [\n//             {\n//               \"id\": \"1\",\n//               \"title\": \"row1\",\n//               \"description\": \"Desc 1\"\n//             }\n//           ]\n//         }\n//       ]\n//   }\n// }\n\n// {\n//   \"conversation_id\": \"767bae74-ef45-4e57-bf87-c46b1b51808d\",\n//   \"receiver\": \"6282214715759\",\n//   \"message\": \"Haloooo button\",\n//   \"media_type\": \"button\",\n//   \"header\": {},\n//   \"action\": {\n//     \"buttons\": [\n//         {\n//           \"type\": \"reply\",\n//           \"reply\": {\n//             \"id\": \"1\",\n//             \"title\": \"label button 1\"\n//           }\n//         },\n//         {\n//           \"type\": \"reply\",\n//           \"reply\": {\n//             \"id\": \"2\",\n//             \"title\": \"label button 2\"\n//           }\n//         },\n//         {\n//           \"type\": \"reply\",\n//           \"reply\": {\n//             \"id\": \"3\",\n//             \"title\": \"label button 3\"\n//           }\n//         }\n//       ]\n//   }\n// }\n\n// {\n//   \"conversation_id\": \"767bae74-ef45-4e57-bf87-c46b1b51808d\",\n//   \"receiver\": \"6282214715759\",\n//   \"message\": \"Haloooo\",\n//   \"media_type\": \"cta_url\",\n//   \"header\": {},\n//   \"action\": {\n//     \"name\": \"interactive_button\",\n//     \"parameters\": {\n//       \"display_text\": \"Chat Cust Service 12222\",\n//       \"url\": \"test url\"\n//     }\n//   }\n// }",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{OPEN_API_SERVER}}/messages/whatsapp",
+              "host": [
+                "{{OPEN_API_SERVER}}"
+              ],
+              "path": [
+                "messages",
+                "whatsapp"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "send wa message Copy",
+          "request": {
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "value",
+                  "value": "{{CEKAT_API_KEY}}",
+                  "type": "string"
+                },
+                {
+                  "key": "key",
+                  "value": "api_key",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"conversation_id\": \"\",\n  \"receiver\": \"\",\n  \"message\": \"Haloooo bales dari api\",\n  \"media_type\": \"location\",\n  \"location\": {\n    \"latitude\": \"-6.2664324\",\n    \"longitude\": \"106.5917695\",\n    \"name\": \"Namam lokasi\",\n    \"address\": \"addresss lokasi\"\n  },\n  \"header\": {},\n  \"action\": {\n    \"name\": \"interactive_button\",\n    \"parameters\": {\n      \"display_text\": \"Chat Cust Service 12222\",\n      \"url\": \"test url\"\n    }\n  }\n}\n\n// {\n//   \"conversation_id\": \"767bae74-ef45-4e57-bf87-c46b1b51808d\",\n//   \"receiver\": \"6282214715759\",\n//   \"message\": \"Haloooo button 10\",\n//   \"media_type\": \"list\",\n//   \"header\": {},\n//   \"action\": {\n//     \"button\": \"text1\",\n//       \"sections\": [\n//         {\n//           \"title\": \"title1\",\n//           \"rows\": [\n//             {\n//               \"id\": \"1\",\n//               \"title\": \"row1\",\n//               \"description\": \"Desc 1\"\n//             }\n//           ]\n//         },\n//          {\n//           \"title\": \"title1\",\n//           \"rows\": [\n//             {\n//               \"id\": \"1\",\n//               \"title\": \"row1\",\n//               \"description\": \"Desc 1\"\n//             }\n//           ]\n//         },\n//          {\n//           \"title\": \"title1\",\n//           \"rows\": [\n//             {\n//               \"id\": \"1\",\n//               \"title\": \"row1\",\n//               \"description\": \"Desc 1\"\n//             }\n//           ]\n//         },{\n//           \"title\": \"title1\",\n//           \"rows\": [\n//             {\n//               \"id\": \"1\",\n//               \"title\": \"row1\",\n//               \"description\": \"Desc 1\"\n//             }\n//           ]\n//         },\n//         {\n//           \"title\": \"title1\",\n//           \"rows\": [\n//             {\n//               \"id\": \"1\",\n//               \"title\": \"row1\",\n//               \"description\": \"Desc 1\"\n//             }\n//           ]\n//         },\n//         {\n//           \"title\": \"title1\",\n//           \"rows\": [\n//             {\n//               \"id\": \"1\",\n//               \"title\": \"row1\",\n//               \"description\": \"Desc 1\"\n//             }\n//           ]\n//         },\n//         {\n//           \"title\": \"title1\",\n//           \"rows\": [\n//             {\n//               \"id\": \"1\",\n//               \"title\": \"row1\",\n//               \"description\": \"Desc 1\"\n//             }\n//           ]\n//         },\n//         {\n//           \"title\": \"title1\",\n//           \"rows\": [\n//             {\n//               \"id\": \"1\",\n//               \"title\": \"row1\",\n//               \"description\": \"Desc 1\"\n//             }\n//           ]\n//         },\n//         {\n//           \"title\": \"title1\",\n//           \"rows\": [\n//             {\n//               \"id\": \"1\",\n//               \"title\": \"row1\",\n//               \"description\": \"Desc 1\"\n//             }\n//           ]\n//         },\n//         {\n//           \"title\": \"title1\",\n//           \"rows\": [\n//             {\n//               \"id\": \"1\",\n//               \"title\": \"row1\",\n//               \"description\": \"Desc 1\"\n//             }\n//           ]\n//         }\n//       ]\n//   }\n// }\n\n// {\n//   \"conversation_id\": \"767bae74-ef45-4e57-bf87-c46b1b51808d\",\n//   \"receiver\": \"6282214715759\",\n//   \"message\": \"Haloooo button\",\n//   \"media_type\": \"button\",\n//   \"header\": {},\n//   \"action\": {\n//     \"buttons\": [\n//         {\n//           \"type\": \"reply\",\n//           \"reply\": {\n//             \"id\": \"1\",\n//             \"title\": \"label button 1\"\n//           }\n//         },\n//         {\n//           \"type\": \"reply\",\n//           \"reply\": {\n//             \"id\": \"2\",\n//             \"title\": \"label button 2\"\n//           }\n//         },\n//         {\n//           \"type\": \"reply\",\n//           \"reply\": {\n//             \"id\": \"3\",\n//             \"title\": \"label button 3\"\n//           }\n//         }\n//       ]\n//   }\n// }\n\n// {\n//   \"conversation_id\": \"767bae74-ef45-4e57-bf87-c46b1b51808d\",\n//   \"receiver\": \"6282214715759\",\n//   \"message\": \"Haloooo\",\n//   \"media_type\": \"cta_url\",\n//   \"header\": {},\n//   \"action\": {\n//     \"name\": \"interactive_button\",\n//     \"parameters\": {\n//       \"display_text\": \"Chat Cust Service 12222\",\n//       \"url\": \"test url\"\n//     }\n//   }\n// }",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{OPEN_API_SERVER}}/messages/whatsapp",
+              "host": [
+                "{{OPEN_API_SERVER}}"
+              ],
+              "path": [
+                "messages",
+                "whatsapp"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "get messages",
+          "request": {
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "value",
+                  "value": "{{CEKAT_API_KEY}}",
+                  "type": "string"
+                },
+                {
+                  "key": "key",
+                  "value": "api_key",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{OPENAPI_LOCAL_SERVER}}/messages?conversation_id=",
+              "host": [
+                "{{OPENAPI_LOCAL_SERVER}}"
+              ],
+              "path": [
+                "messages"
+              ],
+              "query": [
+                {
+                  "key": "conversation_id",
+                  "value": ""
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "get detail message",
+          "request": {
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "value",
+                  "value": "{{CEKAT_API_KEY}}",
+                  "type": "string"
+                },
+                {
+                  "key": "key",
+                  "value": "api_key",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{OPENAPI_LOCAL_SERVER}}/messages/{{message_id}}",
+              "host": [
+                "{{OPENAPI_LOCAL_SERVER}}"
+              ],
+              "path": [
+                "messages",
+                "{{message_id}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "delete conversation",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "access_token",
+                "value": "{{REDACTED_TOKEN}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"conversation_ids\": [\n    \"af13905c-0421-46f5-a7ab-a7a2f6110b27\"\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/v1/backoffice/conversations-delete",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "v1",
+                "backoffice",
+                "conversations-delete"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "delete conversation QA",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "access_token",
+                "value": "{{REDACTED_TOKEN}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"conversation_ids\": [\n    \"0033b9af-dae8-4339-ad63-f714887328a6\"\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/v1/backoffice/conversations-delete",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "v1",
+                "backoffice",
+                "conversations-delete"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "api response beta",
+          "request": {
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "api_key {{Cekat api key}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"messages\": [{\"id\": 1, \"message\": \"hi\", \"sent_by_type\": \"user\"}], //array of object (history msg)\n    \"ai_agent_id\": \"ab759ac2-9f24-402f-9873-57b2e18c474e\",\n    \"chat_data\": {}\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/api/ai_response/beta",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "ai_response",
+                "beta"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "New Request",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": ""
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "New Open API",
+      "item": [
+        {
+          "name": "CRM Open API Copy",
+          "item": [
+            {
+              "name": "boards",
+              "request": {
+                "auth": {
+                  "type": "apikey",
+                  "apikey": [
+                    {
+                      "key": "key",
+                      "value": "api_key",
+                      "type": "string"
+                    },
+                    {
+                      "key": "value",
+                      "value": "{{api_key}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{OPENAPI_LOCAL_SERVER}}/api/crm/boards",
+                  "host": [
+                    "{{OPENAPI_LOCAL_SERVER}}"
+                  ],
+                  "path": [
+                    "api",
+                    "crm",
+                    "boards"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "board",
+              "request": {
+                "auth": {
+                  "type": "apikey",
+                  "apikey": [
+                    {
+                      "key": "value",
+                      "value": "{{api_key}}",
+                      "type": "string"
+                    },
+                    {
+                      "key": "key",
+                      "value": "api_key",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{OPENAPI_LOCAL_SERVER}}/api/crm/boards/:id",
+                  "host": [
+                    "{{OPENAPI_LOCAL_SERVER}}"
+                  ],
+                  "path": [
+                    "api",
+                    "crm",
+                    "boards",
+                    ":id"
+                  ],
+                  "variable": [
+                    {
+                      "key": "id",
+                      "value": "02e66d41-3994-4847-a788-f491c92d3b9f"
+                    }
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "column",
+              "request": {
+                "auth": {
+                  "type": "apikey",
+                  "apikey": [
+                    {
+                      "key": "value",
+                      "value": "{{api_key}}",
+                      "type": "string"
+                    },
+                    {
+                      "key": "key",
+                      "value": "api_key",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{OPENAPI_LOCAL_SERVER}}/api/crm/boards/:boardId/columns/:columnId",
+                  "host": [
+                    "{{OPENAPI_LOCAL_SERVER}}"
+                  ],
+                  "path": [
+                    "api",
+                    "crm",
+                    "boards",
+                    ":boardId",
+                    "columns",
+                    ":columnId"
+                  ],
+                  "variable": [
+                    {
+                      "key": "boardId",
+                      "value": "0ee568c3-cab1-45a0-bb43-d5b452ed879a"
+                    },
+                    {
+                      "key": "columnId",
+                      "value": "0ee834f3-3fff-48aa-b5d7-8b45fad27198"
+                    }
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "column by name",
+              "request": {
+                "auth": {
+                  "type": "apikey",
+                  "apikey": [
+                    {
+                      "key": "key",
+                      "value": "api_key",
+                      "type": "string"
+                    },
+                    {
+                      "key": "value",
+                      "value": "{{api_key}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"name\": \"Status\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{OPENAPI_LOCAL_SERVER}}/api/crm/boards/:boardId/columns/by-name",
+                  "host": [
+                    "{{OPENAPI_LOCAL_SERVER}}"
+                  ],
+                  "path": [
+                    "api",
+                    "crm",
+                    "boards",
+                    ":boardId",
+                    "columns",
+                    "by-name"
+                  ],
+                  "variable": [
+                    {
+                      "key": "boardId",
+                      "value": "e731bf34-d03d-477a-adcd-607e3196c6c7"
+                    }
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "items",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{REDACTED_TOKEN}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "access_token",
+                    "value": "{{access_token}}",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{OPENAPI_LOCAL_SERVER}}/api/crm/boards/:boardId/items",
+                  "host": [
+                    "{{OPENAPI_LOCAL_SERVER}}"
+                  ],
+                  "path": [
+                    "api",
+                    "crm",
+                    "boards",
+                    ":boardId",
+                    "items"
+                  ],
+                  "variable": [
+                    {
+                      "key": "boardId",
+                      "value": "599f81f4-fafe-46fa-8984-b87f25fc6490"
+                    }
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "item",
+              "request": {
+                "auth": {
+                  "type": "apikey",
+                  "apikey": [
+                    {
+                      "key": "key",
+                      "value": "api_key",
+                      "type": "string"
+                    },
+                    {
+                      "key": "value",
+                      "value": "{{api_key}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{OPENAPI_LOCAL_SERVER}}/api/crm/boards/:boardId/items/:id",
+                  "host": [
+                    "{{OPENAPI_LOCAL_SERVER}}"
+                  ],
+                  "path": [
+                    "api",
+                    "crm",
+                    "boards",
+                    ":boardId",
+                    "items",
+                    ":id"
+                  ],
+                  "variable": [
+                    {
+                      "key": "boardId",
+                      "value": "fc86ce1e-8be1-473d-99bf-c99e8869ae24"
+                    },
+                    {
+                      "key": "id",
+                      "value": "42868389-0eaf-4110-93d6-8f6505a98669"
+                    }
+                  ]
+                },
+                "description": "# Get Item Detail\n\n## Overview\n\nRetrieves detailed information about a specific item from a CRM board. This endpoint returns comprehensive item data including basic item information, group details, and associated conversation data with contact information, inbox details, and pipeline status.\n\n## Path Parameters\n\n| Parameter | Type | Required | Description |\n| --- | --- | --- | --- |\n| `boardId` | string (UUID) | Yes | The unique identifier of the CRM board containing the item |\n| `id` | string (UUID) | Yes | The unique identifier of the item to retrieve |\n\n**Example:**\n\n- `boardId`: `fc86ce1e-8be1-473d-99bf-c99e8869ae24`\n    \n- `id`: `42868389-0eaf-4110-93d6-8f6505a98669`\n    \n\n## Headers\n\n| Header | Type | Required | Description |\n| --- | --- | --- | --- |\n| `access_token` | string | Yes | Authentication token for API access. Use `{{access_token}}` variable for dynamic token management |\n\n## Response Structure\n\n### Success Response (200 OK)\n\n``` json\n{\n  \"message\": \"success\",\n  \"data\": {\n    \"item_id\": \"string (UUID)\",\n    \"item_name\": \"string\",\n    \"group_id\": \"string (UUID)\",\n    \"group_name\": \"string\",\n    \"Test Conversation\": {\n      \"id\": \"string (UUID)\",\n      \"inbox\": {\n        \"name\": \"string\"\n      },\n      \"contact\": {\n        \"email\": \"string\",\n        \"display_name\": \"string\",\n        \"phone_number\": \"string\"\n      },\n      \"created_at\": \"string (ISO 8601 timestamp)\",\n      \"handled_by\": \"string or null\",\n      \"updated_at\": \"string (ISO 8601 timestamp)\",\n      \"assigned_by\": \"string or null\",\n      \"stage_status\": \"string\",\n      \"last_active_node\": \"string or null\",\n      \"assigned_ai_agent\": \"string or null\",\n      \"pipeline_status_id\": \"string (UUID)\"\n    }\n  }\n}\n\n ```\n\n### Response Fields\n\n- **item_id**: Unique identifier for the item\n    \n- **item_name**: Display name of the item\n    \n- **group_id**: Unique identifier of the group this item belongs to\n    \n- **group_name**: Display name of the group\n    \n- **Test Conversation**: Conversation object associated with the item containing:\n    \n    - **id**: Unique conversation identifier\n        \n    - **inbox**: Inbox information where the conversation is located\n        \n    - **contact**: Contact details including email, display name, and phone number\n        \n    - **created_at**: Timestamp when the conversation was created\n        \n    - **updated_at**: Timestamp of the last update\n        \n    - **stage_status**: Current stage of the conversation (e.g., \"resolved\", \"open\", \"pending\")\n        \n    - **pipeline_status_id**: Reference to the pipeline status\n        \n    - **handled_by**: User handling the conversation (nullable)\n        \n    - **assigned_by**: User who assigned the conversation (nullable)\n        \n    - **assigned_ai_agent**: AI agent assigned to the conversation (nullable)\n        \n    - **last_active_node**: Last active workflow node (nullable)"
+              },
+              "response": []
+            },
+            {
+              "name": "items search",
+              "request": {
+                "auth": {
+                  "type": "apikey",
+                  "apikey": [
+                    {
+                      "key": "key",
+                      "value": "api_key",
+                      "type": "string"
+                    },
+                    {
+                      "key": "value",
+                      "value": "{{api_key}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"condition\": \"AND\",\n    \"search\": [\n        // {\n        //     \"column_name\": \"item_name\",\n        //     \"operator\": \"contains\",\n        //     \"value\": \"qa\"\n        // },\n        // {\n        //     \"column_name\": \"Test Dropdown\",\n        //     \"operator\": \"is_not_empty\"\n        // },\n        // {\n        //     \"column_name\": \"Test Dropdown\",\n        //     \"operator\": \"equals\",\n        //     \"value\": [\n        //         \"1\"\n        //     ]\n        // }\n        // {\n        //     \"column_name\": \"Test References\",\n        //     \"operator\": \"is_not_empty\"\n        // },\n        {\n            \"column_name\": \"Test References\",\n            \"operator\": \"equals\",\n            \"value\": [\n                \"ec2e88e6-ada8-42ce-a246-287bf937fb4e\",\n                \"60fac3cc-2af6-4bcb-abb4-21094cce1892\"\n            ]\n        }\n        // {\n        //     \"column_name\": \"Test Conversation\",\n        //     \"operator\": \"contains\",\n        //     \"value\": \"48420f3b\"\n        // }\n        // { \n        //     \"column_name\": \"Deal Value\",\n        //     \"operator\": \"greater_than_or_equal\",\n        //     \"value\": -1\n        // }\n        // {\n        //     \"column_name\": \"item_name\",\n        //     \"operator\": \"contains\",\n        //     \"value\": \"apple\"\n        // }\n        // {\n        //     \"column_name\": \"Stage\",\n        //     \"operator\": \"equals\",\n        //     \"value\": \"1\"\n        // }\n        // {\n        //     \"column_name\": \"Expected Close Date\",\n        //     \"operator\": \"start_date\",\n        //     \"value\": \"2025-09-01\"\n        // },\n        // {\n        //     \"column_name\": \"Expected Close Date\",\n        //     \"operator\": \"end_date\",\n        //     \"value\": \"2025-09-30\"\n        // }\n        // {\n        //     \"column_name\": \"Activities Timeline\",\n        //     \"operator\": \"from_start_date\",\n        //     \"value\": \"2025-08-01\"\n        // },\n        // {\n        //     \"column_name\": \"Activities Timeline\",\n        //     \"operator\": \"from_end_date\",\n        //     \"value\": \"2025-09-20\"\n        // },\n        // {\n        //     \"column_name\": \"Activities Timeline\",\n        //     \"operator\": \"to_start_date\",\n        //     \"value\": \"2025-08-01\"\n        // },\n        // {\n        //     \"column_name\": \"Activities Timeline\",\n        //     \"operator\": \"to_end_date\",\n        //     \"value\": \"2025-09-30\"\n        // }\n    ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{OPENAPI_LOCAL_SERVER}}/api/crm/boards/:boardId/items/search",
+                  "host": [
+                    "{{OPENAPI_LOCAL_SERVER}}"
+                  ],
+                  "path": [
+                    "api",
+                    "crm",
+                    "boards",
+                    ":boardId",
+                    "items",
+                    "search"
+                  ],
+                  "variable": [
+                    {
+                      "key": "boardId",
+                      "value": "0ee568c3-cab1-45a0-bb43-d5b452ed879a"
+                    }
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "item with values",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{REDACTED_TOKEN}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"item_name\": \"tes default item open api\",\n    // \"group_id\": \"\"\n    // \"Phone\": \"1234\"\n    // \"Test Conversation\": \"48420f3b-4b32-4959-b7b5-18dfd995b011\"\n    // \"Status\": \"0\",\n    // \"Stages\":  [\"0\", \"1\"]\n    \"New Text\": \"test\",\n    \"New Agents\": [\"90257483-4c57-4a4b-ab51-2c3972ed9dc8\"]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{OPENAPI_LOCAL_SERVER}}/api/crm/boards/:boardId/items",
+                  "host": [
+                    "{{OPENAPI_LOCAL_SERVER}}"
+                  ],
+                  "path": [
+                    "api",
+                    "crm",
+                    "boards",
+                    ":boardId",
+                    "items"
+                  ],
+                  "variable": [
+                    {
+                      "key": "boardId",
+                      "value": "599f81f4-fafe-46fa-8984-b87f25fc6490"
+                    }
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "item with values",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{REDACTED_TOKEN}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "PUT",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"item_name\": \"tes update dari api\",\n    \"New Agents\": []\n    // \"Status\": \"0\",\n    // \"Stages\":  [\"0\", \"1\"]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{OPENAPI_LOCAL_SERVER}}/api/crm/boards/:boardId/items/:itemId",
+                  "host": [
+                    "{{OPENAPI_LOCAL_SERVER}}"
+                  ],
+                  "path": [
+                    "api",
+                    "crm",
+                    "boards",
+                    ":boardId",
+                    "items",
+                    ":itemId"
+                  ],
+                  "variable": [
+                    {
+                      "key": "boardId",
+                      "value": "751237f8-90db-47fe-a6af-8c768da690e6"
+                    },
+                    {
+                      "key": "itemId",
+                      "value": "5d6023ab-8157-4bd8-9eca-1f1133a154f3"
+                    }
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "items",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{REDACTED_TOKEN}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "DELETE",
+                "header": [
+                  {
+                    "key": "access_token",
+                    "value": "{{access_token}}",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"item_ids\": [\"36a06fc8-1822-4517-bf4f-4a6665cec044\", \"663aa920-5041-41d9-87d6-ad793ef771e2\"]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{OPENAPI_LOCAL_SERVER}}/api/crm/boards/:boardId/items",
+                  "host": [
+                    "{{OPENAPI_LOCAL_SERVER}}"
+                  ],
+                  "path": [
+                    "api",
+                    "crm",
+                    "boards",
+                    ":boardId",
+                    "items"
+                  ],
+                  "variable": [
+                    {
+                      "key": "boardId",
+                      "value": "fc86ce1e-8be1-473d-99bf-c99e8869ae24"
+                    }
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "create contact",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{OPENAPI_KEY}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "access_token",
+                    "value": "{{REDACTED_TOKEN}}"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{OPENAPI_KEY}}"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"display_name\": \"John Doe\",\n    \"phone_number\": \"628123456789\",\n    \"email\": \"john@example.com\",\n    \"stage_id\": \"f2105659-944c-420a-afc4-f2d72d22bb97\",\n    \"additional_data\": { \"source\": \"open_api\" }\n  }",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "http://localhost:3001/api/crm/contact",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "3001",
+                  "path": [
+                    "api",
+                    "crm",
+                    "contact"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "get detail contact",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{OPENAPI_KEY}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "access_token",
+                    "value": "{{REDACTED_TOKEN}}"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{OPENAPI_KEY}}"
+                  }
+                ],
+                "url": {
+                  "raw": "http://localhost:3001/api/crm/contact/9007bac1-a1f2-471a-8813-74cd5b82189a",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "3001",
+                  "path": [
+                    "api",
+                    "crm",
+                    "contact",
+                    "9007bac1-a1f2-471a-8813-74cd5b82189a"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "update contact",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{OPENAPI_KEY}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "access_token",
+                    "value": "{{REDACTED_TOKEN}}"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{OPENAPI_KEY}}"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"display_name\": \"John Updated 1\",\n    \"note\": \"updated from open api\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "http://localhost:3001/api/crm/contact/9007bac1-a1f2-471a-8813-74cd5b82189a",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "3001",
+                  "path": [
+                    "api",
+                    "crm",
+                    "contact",
+                    "9007bac1-a1f2-471a-8813-74cd5b82189a"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "Orders Open API Copy",
+          "item": [
+            {
+              "name": "orders",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{REDACTED_TOKEN}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "access_token",
+                    "value": "{{access_token}}",
+                    "disabled": true
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n  \"payment_method\": \"manual\",\r\n  \"orders_products\": [\r\n    {\r\n      \"product_id\": \"your-product-id\",\r\n      \"quantity\": 1\r\n    }\r\n  ],\r\n  \"contact_id\": \"ce7b9f99-ac01-4ba5-920b-027ae7315034\",\r\n  \"phone_number\": \"081234567890\",\r\n  \"bank_account_number\": \"your-bank-account-number\",\r\n  \"discount\": 0,\r\n  \"shipping_fee\": 100,\r\n  \"vat\": 100\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{OPENAPI_LOCAL_SERVER}}/api/orders",
+                  "host": [
+                    "{{OPENAPI_LOCAL_SERVER}}"
+                  ],
+                  "path": [
+                    "api",
+                    "orders"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "orders",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{REDACTED_TOKEN}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "access_token",
+                    "value": "{{access_token}}",
+                    "disabled": true
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{OPENAPI_LOCAL_SERVER}}/api/orders?page=1&limit=10",
+                  "host": [
+                    "{{OPENAPI_LOCAL_SERVER}}"
+                  ],
+                  "path": [
+                    "api",
+                    "orders"
+                  ],
+                  "query": [
+                    {
+                      "key": "order_status",
+                      "value": "pending",
+                      "disabled": true
+                    },
+                    {
+                      "key": "payment_status",
+                      "value": "paid",
+                      "disabled": true
+                    },
+                    {
+                      "key": "start_date",
+                      "value": "",
+                      "disabled": true
+                    },
+                    {
+                      "key": "end_date",
+                      "value": "",
+                      "disabled": true
+                    },
+                    {
+                      "key": "search",
+                      "value": ".com",
+                      "disabled": true
+                    },
+                    {
+                      "key": "sort_field",
+                      "value": "created_at",
+                      "disabled": true
+                    },
+                    {
+                      "key": "sort_direction",
+                      "value": "desc",
+                      "disabled": true
+                    },
+                    {
+                      "key": "include_conv",
+                      "value": "true",
+                      "disabled": true
+                    },
+                    {
+                      "key": "inbox_id",
+                      "value": "",
+                      "disabled": true
+                    },
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "10"
+                    },
+                    {
+                      "key": "product_ids",
+                      "value": "[]",
+                      "disabled": true
+                    },
+                    {
+                      "key": "export_scope",
+                      "value": "all_with_filters",
+                      "disabled": true
+                    }
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "order by id",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{REDACTED_TOKEN}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "access_token",
+                    "value": "{{access_token}}",
+                    "disabled": true
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{OPENAPI_LOCAL_SERVER}}/api/orders/:id",
+                  "host": [
+                    "{{OPENAPI_LOCAL_SERVER}}"
+                  ],
+                  "path": [
+                    "api",
+                    "orders",
+                    ":id"
+                  ],
+                  "variable": [
+                    {
+                      "key": "id",
+                      "value": "02e2b6b2-8f60-45f1-95d1-60d41e5b9f9d"
+                    }
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "order",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{REDACTED_TOKEN}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "access_token",
+                    "value": "{{access_token}}",
+                    "disabled": true
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"order_status\": \"pending\",\r\n    \"payment_status\": \"pending\",\r\n    \"custom_invoice_url\": \"test ganti\",\r\n    \"invoice_is_sent\": true,\r\n    \"address\": \"ruko hampton blok a no.10\",\r\n    \"notes\": \"karrrrr\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{OPENAPI_LOCAL_SERVER}}/api/orders/:id",
+                  "host": [
+                    "{{OPENAPI_LOCAL_SERVER}}"
+                  ],
+                  "path": [
+                    "api",
+                    "orders",
+                    ":id"
+                  ],
+                  "variable": [
+                    {
+                      "key": "id",
+                      "value": "8f14f414-e452-4fcc-a3e5-fbc69eee054f"
+                    }
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "Messages",
+          "item": [
+            {
+              "name": "get messages",
+              "request": {
+                "auth": {
+                  "type": "noauth"
+                },
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "api_key {{CEKAT_API_KEY}}",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{OPENAPI_LOCAL_SERVER}}/api/messages",
+                  "host": [
+                    "{{OPENAPI_LOCAL_SERVER}}"
+                  ],
+                  "path": [
+                    "api",
+                    "messages"
+                  ],
+                  "query": [
+                    {
+                      "key": "conversation_id",
+                      "value": "tes",
+                      "disabled": true
+                    },
+                    {
+                      "key": "start_date",
+                      "value": "2025-08-08",
+                      "disabled": true
+                    },
+                    {
+                      "key": "end_date",
+                      "value": "2025-08-08",
+                      "disabled": true
+                    },
+                    {
+                      "key": "page",
+                      "value": "1",
+                      "disabled": true
+                    },
+                    {
+                      "key": "limit",
+                      "value": "10",
+                      "disabled": true
+                    }
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "get summary message with chat credit",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{OPENAPI_LOCAL_SERVER}}/api/messages/summary/ai_credits?start_date=2025-08-08&end_date=2025-08-12",
+                  "host": [
+                    "{{OPENAPI_LOCAL_SERVER}}"
+                  ],
+                  "path": [
+                    "api",
+                    "messages",
+                    "summary",
+                    "ai_credits"
+                  ],
+                  "query": [
+                    {
+                      "key": "conversation_id",
+                      "value": "",
+                      "description": "conversation id (optional)",
+                      "disabled": true
+                    },
+                    {
+                      "key": "start_date",
+                      "value": "2025-08-08",
+                      "description": "YYYY-MM-DD (Jakarta Time)"
+                    },
+                    {
+                      "key": "end_date",
+                      "value": "2025-08-12",
+                      "description": "YYYY-MM-DD (Jakarta Time)"
+                    }
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "send wa message Copy",
+              "request": {
+                "auth": {
+                  "type": "apikey",
+                  "apikey": [
+                    {
+                      "key": "value",
+                      "value": "{{CEKAT_API_KEY}}",
+                      "type": "string"
+                    },
+                    {
+                      "key": "key",
+                      "value": "api_key",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"conversation_id\": \"\",\n  \"receiver\": \"\",\n  \"message\": \"Haloooo bales dari api\",\n  \"media_type\": \"location\",\n  \"location\": {\n    \"latitude\": \"-6.2664324\",\n    \"longitude\": \"106.5917695\",\n    \"name\": \"Namam lokasi\",\n    \"address\": \"addresss lokasi\"\n  },\n  \"header\": {},\n  \"action\": {\n    \"name\": \"interactive_button\",\n    \"parameters\": {\n      \"display_text\": \"Chat Cust Service 12222\",\n      \"url\": \"test url\"\n    }\n  }\n}\n\n// {\n//   \"conversation_id\": \"767bae74-ef45-4e57-bf87-c46b1b51808d\",\n//   \"receiver\": \"6282214715759\",\n//   \"message\": \"Haloooo button 10\",\n//   \"media_type\": \"list\",\n//   \"header\": {},\n//   \"action\": {\n//     \"button\": \"text1\",\n//       \"sections\": [\n//         {\n//           \"title\": \"title1\",\n//           \"rows\": [\n//             {\n//               \"id\": \"1\",\n//               \"title\": \"row1\",\n//               \"description\": \"Desc 1\"\n//             }\n//           ]\n//         },\n//          {\n//           \"title\": \"title1\",\n//           \"rows\": [\n//             {\n//               \"id\": \"1\",\n//               \"title\": \"row1\",\n//               \"description\": \"Desc 1\"\n//             }\n//           ]\n//         },\n//          {\n//           \"title\": \"title1\",\n//           \"rows\": [\n//             {\n//               \"id\": \"1\",\n//               \"title\": \"row1\",\n//               \"description\": \"Desc 1\"\n//             }\n//           ]\n//         },{\n//           \"title\": \"title1\",\n//           \"rows\": [\n//             {\n//               \"id\": \"1\",\n//               \"title\": \"row1\",\n//               \"description\": \"Desc 1\"\n//             }\n//           ]\n//         },\n//         {\n//           \"title\": \"title1\",\n//           \"rows\": [\n//             {\n//               \"id\": \"1\",\n//               \"title\": \"row1\",\n//               \"description\": \"Desc 1\"\n//             }\n//           ]\n//         },\n//         {\n//           \"title\": \"title1\",\n//           \"rows\": [\n//             {\n//               \"id\": \"1\",\n//               \"title\": \"row1\",\n//               \"description\": \"Desc 1\"\n//             }\n//           ]\n//         },\n//         {\n//           \"title\": \"title1\",\n//           \"rows\": [\n//             {\n//               \"id\": \"1\",\n//               \"title\": \"row1\",\n//               \"description\": \"Desc 1\"\n//             }\n//           ]\n//         },\n//         {\n//           \"title\": \"title1\",\n//           \"rows\": [\n//             {\n//               \"id\": \"1\",\n//               \"title\": \"row1\",\n//               \"description\": \"Desc 1\"\n//             }\n//           ]\n//         },\n//         {\n//           \"title\": \"title1\",\n//           \"rows\": [\n//             {\n//               \"id\": \"1\",\n//               \"title\": \"row1\",\n//               \"description\": \"Desc 1\"\n//             }\n//           ]\n//         },\n//         {\n//           \"title\": \"title1\",\n//           \"rows\": [\n//             {\n//               \"id\": \"1\",\n//               \"title\": \"row1\",\n//               \"description\": \"Desc 1\"\n//             }\n//           ]\n//         }\n//       ]\n//   }\n// }\n\n// {\n//   \"conversation_id\": \"767bae74-ef45-4e57-bf87-c46b1b51808d\",\n//   \"receiver\": \"6282214715759\",\n//   \"message\": \"Haloooo button\",\n//   \"media_type\": \"button\",\n//   \"header\": {},\n//   \"action\": {\n//     \"buttons\": [\n//         {\n//           \"type\": \"reply\",\n//           \"reply\": {\n//             \"id\": \"1\",\n//             \"title\": \"label button 1\"\n//           }\n//         },\n//         {\n//           \"type\": \"reply\",\n//           \"reply\": {\n//             \"id\": \"2\",\n//             \"title\": \"label button 2\"\n//           }\n//         },\n//         {\n//           \"type\": \"reply\",\n//           \"reply\": {\n//             \"id\": \"3\",\n//             \"title\": \"label button 3\"\n//           }\n//         }\n//       ]\n//   }\n// }\n\n// {\n//   \"conversation_id\": \"767bae74-ef45-4e57-bf87-c46b1b51808d\",\n//   \"receiver\": \"6282214715759\",\n//   \"message\": \"Haloooo\",\n//   \"media_type\": \"cta_url\",\n//   \"header\": {},\n//   \"action\": {\n//     \"name\": \"interactive_button\",\n//     \"parameters\": {\n//       \"display_text\": \"Chat Cust Service 12222\",\n//       \"url\": \"test url\"\n//     }\n//   }\n// }",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{OPEN_API_SERVER}}/messages/whatsapp",
+                  "host": [
+                    "{{OPEN_API_SERVER}}"
+                  ],
+                  "path": [
+                    "messages",
+                    "whatsapp"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "Agents",
+          "item": [
+            {
+              "name": "get agents",
+              "request": {
+                "auth": {
+                  "type": "apikey",
+                  "apikey": [
+                    {
+                      "key": "value",
+                      "value": "{{api_key}}",
+                      "type": "string"
+                    },
+                    {
+                      "key": "key",
+                      "value": "api_key",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "authorization",
+                    "value": "api_key {{CEKAT_API_KEY}}",
+                    "type": "text",
+                    "disabled": true
+                  }
+                ],
+                "url": {
+                  "raw": "{{OPENAPI_LOCAL_SERVER}}/api/agents",
+                  "host": [
+                    "{{OPENAPI_LOCAL_SERVER}}"
+                  ],
+                  "path": [
+                    "api",
+                    "agents"
+                  ],
+                  "query": [
+                    {
+                      "key": "limit",
+                      "value": "3",
+                      "disabled": true
+                    },
+                    {
+                      "key": "page",
+                      "value": "2",
+                      "disabled": true
+                    },
+                    {
+                      "key": "start_date",
+                      "value": "2025-09-01",
+                      "disabled": true
+                    },
+                    {
+                      "key": "end_date",
+                      "value": "2025-09-19",
+                      "disabled": true
+                    }
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "Inboxes",
+          "item": [
+            {
+              "name": "get inboxes",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{OPENAPI_LOCAL_SERVER}}/api/inboxes?limit=3&page=2",
+                  "host": [
+                    "{{OPENAPI_LOCAL_SERVER}}"
+                  ],
+                  "path": [
+                    "api",
+                    "inboxes"
+                  ],
+                  "query": [
+                    {
+                      "key": "limit",
+                      "value": "3"
+                    },
+                    {
+                      "key": "page",
+                      "value": "2"
+                    },
+                    {
+                      "key": "start_date",
+                      "value": "2025-09-01",
+                      "disabled": true
+                    },
+                    {
+                      "key": "end_date",
+                      "value": "2025-09-30",
+                      "type": "text",
+                      "disabled": true
+                    }
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "Broadcasts/Campaigns",
+          "item": [
+            {
+              "name": "get campaigns",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{OPENAPI_LOCAL_SERVER}}/api/campaigns?limit=1&page=1",
+                  "host": [
+                    "{{OPENAPI_LOCAL_SERVER}}"
+                  ],
+                  "path": [
+                    "api",
+                    "campaigns"
+                  ],
+                  "query": [
+                    {
+                      "key": "limit",
+                      "value": "1"
+                    },
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "start_date",
+                      "value": "2025-09-01",
+                      "disabled": true
+                    },
+                    {
+                      "key": "end_date",
+                      "value": "2025-09-30",
+                      "disabled": true
+                    }
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "get campaign message",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{OPENAPI_LOCAL_SERVER}}/api/campaigns/:id/messages?page=1&limit=2",
+                  "host": [
+                    "{{OPENAPI_LOCAL_SERVER}}"
+                  ],
+                  "path": [
+                    "api",
+                    "campaigns",
+                    ":id",
+                    "messages"
+                  ],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "2"
+                    },
+                    {
+                      "key": "start_date",
+                      "value": "",
+                      "disabled": true
+                    },
+                    {
+                      "key": "end_date",
+                      "value": "",
+                      "disabled": true
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "key": "id",
+                      "value": "6d5d5caf-66f6-4a71-8c71-df0287141039"
+                    }
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "Agent Assignments",
+          "item": [
+            {
+              "name": "conversation agents assignments",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "authorization",
+                    "value": "api_key {{CEKAT_API_KEY}}",
+                    "type": "text",
+                    "disabled": true
+                  }
+                ],
+                "url": {
+                  "raw": "{{OPENAPI_LOCAL_SERVER}}/api/conversations/agent-assignments",
+                  "host": [
+                    "{{OPENAPI_LOCAL_SERVER}}"
+                  ],
+                  "path": [
+                    "api",
+                    "conversations",
+                    "agent-assignments"
+                  ],
+                  "query": [
+                    {
+                      "key": "limit",
+                      "value": "3",
+                      "disabled": true
+                    },
+                    {
+                      "key": "page",
+                      "value": "2",
+                      "disabled": true
+                    },
+                    {
+                      "key": "start_date",
+                      "value": "2025-09-01",
+                      "disabled": true
+                    },
+                    {
+                      "key": "end_date",
+                      "value": "2025-09-19",
+                      "disabled": true
+                    }
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "get agent assignments",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{OPENAPI_LOCAL_SERVER}}/api/agent_assignments?limit=1000&page=1&start_date=2025-12-06&end_date=2025-12-08",
+                  "host": [
+                    "{{OPENAPI_LOCAL_SERVER}}"
+                  ],
+                  "path": [
+                    "api",
+                    "agent_assignments"
+                  ],
+                  "query": [
+                    {
+                      "key": "limit",
+                      "value": "1000"
+                    },
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "start_date",
+                      "value": "2025-12-06"
+                    },
+                    {
+                      "key": "end_date",
+                      "value": "2025-12-08"
+                    }
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "Conversations",
+          "item": [
+            {
+              "name": "get conversations",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "api_key {{CEKAT_API_KEY}}",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{OPENAPI_LOCAL_SERVER}}/api/conversations?limit=1&page=2",
+                  "host": [
+                    "{{OPENAPI_LOCAL_SERVER}}"
+                  ],
+                  "path": [
+                    "api",
+                    "conversations"
+                  ],
+                  "query": [
+                    {
+                      "key": "limit",
+                      "value": "1"
+                    },
+                    {
+                      "key": "page",
+                      "value": "2"
+                    },
+                    {
+                      "key": "start_date",
+                      "value": "2025-09-01",
+                      "type": "text",
+                      "disabled": true
+                    },
+                    {
+                      "key": "end_date",
+                      "value": "2025-10-08",
+                      "type": "text",
+                      "disabled": true
+                    }
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "[CA-2567] Get Conversation Detail",
+              "request": {
+                "auth": {
+                  "type": "noauth"
+                },
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "api_key {{CEKAT_API_KEY}}",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{OPENAPI_LOCAL_SERVER}}/api/conversations/:conversation_id",
+                  "host": [
+                    "{{OPENAPI_LOCAL_SERVER}}"
+                  ],
+                  "path": [
+                    "api",
+                    "conversations",
+                    ":conversation_id"
+                  ],
+                  "variable": [
+                    {
+                      "key": "conversation_id",
+                      "value": "67247cb8-6f92-40da-81ae-bd1c41131027"
+                    }
+                  ]
+                }
+              },
+              "response": [
+                {
+                  "name": "success",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Authorization",
+                        "value": "api_key {{CEKAT_API_KEY}}",
+                        "type": "text"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{OPENAPI_LOCAL_SERVER}}/api/conversations/:id",
+                      "host": [
+                        "{{OPENAPI_LOCAL_SERVER}}"
+                      ],
+                      "path": [
+                        "api",
+                        "conversations",
+                        ":id"
+                      ],
+                      "variable": [
+                        {
+                          "key": "id",
+                          "value": "67247cb8-6f92-40da-81ae-bd1c41131027"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "Text",
+                  "header": [
+                    {
+                      "key": "X-Powered-By",
+                      "value": "Express"
+                    },
+                    {
+                      "key": "Vary",
+                      "value": "Origin"
+                    },
+                    {
+                      "key": "Access-Control-Allow-Credentials",
+                      "value": "true"
+                    },
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json; charset=utf-8"
+                    },
+                    {
+                      "key": "Content-Length",
+                      "value": "2101"
+                    },
+                    {
+                      "key": "ETag",
+                      "value": "W/\"835-N9iHz6O21a97mOiSdU+b/+aEGcE\""
+                    },
+                    {
+                      "key": "Date",
+                      "value": "Fri, 10 Apr 2026 06:47:02 GMT"
+                    },
+                    {
+                      "key": "Connection",
+                      "value": "keep-alive"
+                    },
+                    {
+                      "key": "Keep-Alive",
+                      "value": "timeout=5"
+                    }
+                  ],
+                  "cookie": [],
+                  "body": "{\n    \"success\": true,\n    \"data\": {\n        \"id\": \"67247cb8-6f92-40da-81ae-bd1c41131027\",\n        \"notes\": null,\n        \"labels\": [\n            {\n                \"id\": \"6deddda0-65c9-4b8a-802b-739d46339d1f\",\n                \"name\": \"Asri Living App\",\n                \"color\": \"#62e64c\"\n            },\n            {\n                \"id\": \"3007d04a-e05e-42cc-b122-3c23f7671a48\",\n                \"name\": \"Bug Report\",\n                \"color\": \"#e113ff\"\n            },\n            {\n                \"id\": \"bd2df69d-ca4b-444d-beb6-de7a1fde6f09\",\n                \"name\": \"HC\",\n                \"color\": \"#e71f1f\"\n            },\n            {\n                \"id\": \"bd06c3cf-bb6a-4087-b3d6-375b69242564\",\n                \"name\": \"Hamzah\",\n                \"color\": \"#c74e4e\"\n            },\n            {\n                \"id\": \"b6a5ec81-807b-4dea-8972-f9522835b2d5\",\n                \"name\": \"Label 1\",\n                \"color\": \"#97d8d6\"\n            },\n            {\n                \"id\": \"2fd0e42f-f085-4245-abba-5640515ba1fd\",\n                \"name\": \"Label 16\",\n                \"color\": \"#76af07\"\n            },\n            {\n                \"id\": \"002a122a-bc11-47f4-983b-9c743f75acd1\",\n                \"name\": \"Label 56\",\n                \"color\": \"#f25f01\"\n            },\n            {\n                \"id\": \"9fec4d54-bb29-4e25-acf7-ccaffc3b04b3\",\n                \"name\": \"Label 7\",\n                \"color\": \"#fce200\"\n            },\n            {\n                \"id\": \"513e93cd-ac01-4dd1-80db-eab2cf99dd9f\",\n                \"name\": \"Label 981\",\n                \"color\": \"#29db9e\"\n            },\n            {\n                \"id\": \"606a1566-edce-4445-a7af-5afb3f6b9796\",\n                \"name\": \"Label 982\",\n                \"color\": \"#01f529\"\n            },\n            {\n                \"id\": \"0eccb05e-097c-4c1d-aa2e-a7d3516f39eb\",\n                \"name\": \"Label 992\",\n                \"color\": \"#cfaeb8\"\n            },\n            {\n                \"id\": \"56b1f610-7ece-4ae6-b02c-ae564a5d73e9\",\n                \"name\": \"apa\",\n                \"color\": \"#231fa4\"\n            },\n            {\n                \"id\": \"d7639062-aa50-4207-9e41-c8d3fd65d5d5\",\n                \"name\": \"kocak\",\n                \"color\": \"#423ec3\"\n            },\n            {\n                \"id\": \"03eaa797-3b10-4053-87b5-f46a22d183e4\",\n                \"name\": \"lah\",\n                \"color\": \"#EB5757\"\n            }\n        ],\n        \"inbox_id\": \"4f47a10c-58e1-4d94-8ea2-02bf468d6614\",\n        \"pipeline\": {\n            \"id\": \"6e998418-5527-487b-b808-6c54acf97031\",\n            \"name\": \"warm lead\"\n        },\n        \"contact_id\": \"2020ed10-3b9c-4109-882f-fd61fb3f4713\",\n        \"created_at\": \"2025-10-20T07:57:19.465267+00:00\",\n        \"inbox_name\": \"Putri Shop 2 (Ada Ai)\",\n        \"resolved_at\": null,\n        \"contact_name\": \"LuckyUser_OC1Oj\",\n        \"last_message\": {\n            \"message\": \"saksahsa\",\n            \"created_at\": \"2026-03-11T07:50:42.972+00:00\",\n            \"sent_by_type\": \"agent\"\n        },\n        \"stage_status\": \"assigned\",\n        \"collaborators\": [\n            {\n                \"id\": \"e4d70c07-21fb-42db-8c21-eb4929347a88\",\n                \"name\": \"Hamzah spv\"\n            }\n        ],\n        \"contact_phone\": \"\",\n        \"first_message\": {\n            \"message\": \"\"\n        },\n        \"handled_by_id\": \"34aa8f9c-8b12-4701-8150-d4f180ffb8a9\",\n        \"platform_type\": \"livechat\",\n        \"resolved_by_id\": null,\n        \"additional_data\": null,\n        \"handled_by_name\": \"Indah G.\",\n        \"resolved_by_name\": null,\n        \"last_message_by_human\": {\n            \"message\": \"saksahsa\",\n            \"created_at\": \"2026-03-11T07:50:42.903Z\",\n            \"sent_by_type\": \"agent\"\n        }\n    }\n}"
+                },
+                {
+                  "name": "success",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Authorization",
+                        "value": "api_key {{CEKAT_API_KEY}}",
+                        "type": "text"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{OPENAPI_LOCAL_SERVER}}/api/conversations/:conversation_id",
+                      "host": [
+                        "{{OPENAPI_LOCAL_SERVER}}"
+                      ],
+                      "path": [
+                        "api",
+                        "conversations",
+                        ":conversation_id"
+                      ],
+                      "variable": [
+                        {
+                          "key": "conversation_id",
+                          "value": "3e44c822-fa61-4031-95fa-324751c4e119"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "Text",
+                  "header": [
+                    {
+                      "key": ":status",
+                      "value": 200
+                    },
+                    {
+                      "key": "date",
+                      "value": "Tue, 14 Apr 2026 07:50:18 GMT"
+                    },
+                    {
+                      "key": "content-type",
+                      "value": "application/json; charset=utf-8"
+                    },
+                    {
+                      "key": "content-length",
+                      "value": "434"
+                    },
+                    {
+                      "key": "report-to",
+                      "value": "{\"group\":\"cf-nel\",\"max_age\":604800,\"endpoints\":[{\"url\":\"https://a.nel.cloudflare.com/report/v4?s=BvpHfmy3ByYlFb4FmmjV5ezo9RsOC5UDrBCQFrdvAR6Vd8YQ5tJGRmzG9IaSj1d9aX8EgQg6j5bFiwpqs1my6RCB7jDroY4pKUzDmARz7ZSQbg%2FLPnFYW5ENoJZB7k6B547SXzSTKIH%2B\"}]}"
+                    },
+                    {
+                      "key": "nel",
+                      "value": "{\"report_to\":\"cf-nel\",\"success_fraction\":0.0,\"max_age\":604800}"
+                    },
+                    {
+                      "key": "server",
+                      "value": "cloudflare"
+                    },
+                    {
+                      "key": "access-control-allow-credentials",
+                      "value": "true"
+                    },
+                    {
+                      "key": "content-encoding",
+                      "value": "br"
+                    },
+                    {
+                      "key": "etag",
+                      "value": "W/\"2e5-+x7Ot0vQzczNhP/5S8omff4q/y4\""
+                    },
+                    {
+                      "key": "rndr-id",
+                      "value": "cabb942d-9dc1-493f"
+                    },
+                    {
+                      "key": "vary",
+                      "value": "Origin, Accept-Encoding, Accept-Encoding"
+                    },
+                    {
+                      "key": "x-powered-by",
+                      "value": "Express"
+                    },
+                    {
+                      "key": "x-ratelimit-limit",
+                      "value": "10"
+                    },
+                    {
+                      "key": "x-ratelimit-remaining",
+                      "value": "8"
+                    },
+                    {
+                      "key": "x-ratelimit-reset",
+                      "value": "1776153067"
+                    },
+                    {
+                      "key": "x-render-origin-server",
+                      "value": "Render"
+                    },
+                    {
+                      "key": "cf-cache-status",
+                      "value": "DYNAMIC"
+                    },
+                    {
+                      "key": "cf-ray",
+                      "value": "9ec11e6eecad50c7-CGK"
+                    }
+                  ],
+                  "cookie": [],
+                  "body": "{\n    \"success\": true,\n    \"data\": {\n        \"id\": \"3e44c822-fa61-4031-95fa-324751c4e119\",\n        \"notes\": null,\n        \"labels\": [],\n        \"inbox_id\": \"3f21998a-48b7-4f44-a216-c9c511736b76\",\n        \"pipeline\": {\n            \"id\": \"6242d5ae-9bb9-4e90-9970-1b611c10d9c9\",\n            \"name\": \"Deal\"\n        },\n        \"contact_id\": \"c9301d47-9747-4905-8494-f0c747174cc0\",\n        \"created_at\": \"2026-04-10T08:24:50.209742+00:00\",\n        \"inbox_name\": \"n8n testing\",\n        \"resolved_at\": null,\n        \"contact_name\": \"Krab\",\n        \"last_message\": {\n            \"message\": \"test\",\n            \"created_at\": \"2026-04-14T07:32:31.454+00:00\"\n        },\n        \"stage_status\": \"assigned\",\n        \"collaborators\": [],\n        \"contact_phone\": \"712381231\",\n        \"first_message\": {\n            \"message\": \"\"\n        },\n        \"handled_by_id\": \"969ae741-6d24-4c5e-993a-5cb3f1847e65\",\n        \"platform_type\": \"livechat\",\n        \"resolved_by_id\": null,\n        \"additional_data\": {},\n        \"handled_by_name\": \"Agung\",\n        \"resolved_by_name\": null\n    }\n}"
+                }
+              ]
+            },
+            {
+              "name": "[CA-2567] Get Conversation Detail QA",
+              "request": {
+                "auth": {
+                  "type": "noauth"
+                },
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "api_key {{CEKAT_API_KEY}}",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{OPENAPI_LOCAL_SERVER}}/api/conversations/:conversation_id",
+                  "host": [
+                    "{{OPENAPI_LOCAL_SERVER}}"
+                  ],
+                  "path": [
+                    "api",
+                    "conversations",
+                    ":conversation_id"
+                  ],
+                  "variable": [
+                    {
+                      "key": "conversation_id",
+                      "value": "67247cb8-6f92-40da-81ae-bd1c41131027"
+                    }
+                  ]
+                }
+              },
+              "response": [
+                {
+                  "name": "success",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Authorization",
+                        "value": "api_key {{CEKAT_API_KEY}}",
+                        "type": "text"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{OPENAPI_LOCAL_SERVER}}/api/conversations/:id",
+                      "host": [
+                        "{{OPENAPI_LOCAL_SERVER}}"
+                      ],
+                      "path": [
+                        "api",
+                        "conversations",
+                        ":id"
+                      ],
+                      "variable": [
+                        {
+                          "key": "id",
+                          "value": "67247cb8-6f92-40da-81ae-bd1c41131027"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "Text",
+                  "header": [
+                    {
+                      "key": "X-Powered-By",
+                      "value": "Express"
+                    },
+                    {
+                      "key": "Vary",
+                      "value": "Origin"
+                    },
+                    {
+                      "key": "Access-Control-Allow-Credentials",
+                      "value": "true"
+                    },
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json; charset=utf-8"
+                    },
+                    {
+                      "key": "Content-Length",
+                      "value": "2101"
+                    },
+                    {
+                      "key": "ETag",
+                      "value": "W/\"835-N9iHz6O21a97mOiSdU+b/+aEGcE\""
+                    },
+                    {
+                      "key": "Date",
+                      "value": "Fri, 10 Apr 2026 06:47:02 GMT"
+                    },
+                    {
+                      "key": "Connection",
+                      "value": "keep-alive"
+                    },
+                    {
+                      "key": "Keep-Alive",
+                      "value": "timeout=5"
+                    }
+                  ],
+                  "cookie": [],
+                  "body": "{\n    \"success\": true,\n    \"data\": {\n        \"id\": \"67247cb8-6f92-40da-81ae-bd1c41131027\",\n        \"notes\": null,\n        \"labels\": [\n            {\n                \"id\": \"6deddda0-65c9-4b8a-802b-739d46339d1f\",\n                \"name\": \"Asri Living App\",\n                \"color\": \"#62e64c\"\n            },\n            {\n                \"id\": \"3007d04a-e05e-42cc-b122-3c23f7671a48\",\n                \"name\": \"Bug Report\",\n                \"color\": \"#e113ff\"\n            },\n            {\n                \"id\": \"bd2df69d-ca4b-444d-beb6-de7a1fde6f09\",\n                \"name\": \"HC\",\n                \"color\": \"#e71f1f\"\n            },\n            {\n                \"id\": \"bd06c3cf-bb6a-4087-b3d6-375b69242564\",\n                \"name\": \"Hamzah\",\n                \"color\": \"#c74e4e\"\n            },\n            {\n                \"id\": \"b6a5ec81-807b-4dea-8972-f9522835b2d5\",\n                \"name\": \"Label 1\",\n                \"color\": \"#97d8d6\"\n            },\n            {\n                \"id\": \"2fd0e42f-f085-4245-abba-5640515ba1fd\",\n                \"name\": \"Label 16\",\n                \"color\": \"#76af07\"\n            },\n            {\n                \"id\": \"002a122a-bc11-47f4-983b-9c743f75acd1\",\n                \"name\": \"Label 56\",\n                \"color\": \"#f25f01\"\n            },\n            {\n                \"id\": \"9fec4d54-bb29-4e25-acf7-ccaffc3b04b3\",\n                \"name\": \"Label 7\",\n                \"color\": \"#fce200\"\n            },\n            {\n                \"id\": \"513e93cd-ac01-4dd1-80db-eab2cf99dd9f\",\n                \"name\": \"Label 981\",\n                \"color\": \"#29db9e\"\n            },\n            {\n                \"id\": \"606a1566-edce-4445-a7af-5afb3f6b9796\",\n                \"name\": \"Label 982\",\n                \"color\": \"#01f529\"\n            },\n            {\n                \"id\": \"0eccb05e-097c-4c1d-aa2e-a7d3516f39eb\",\n                \"name\": \"Label 992\",\n                \"color\": \"#cfaeb8\"\n            },\n            {\n                \"id\": \"56b1f610-7ece-4ae6-b02c-ae564a5d73e9\",\n                \"name\": \"apa\",\n                \"color\": \"#231fa4\"\n            },\n            {\n                \"id\": \"d7639062-aa50-4207-9e41-c8d3fd65d5d5\",\n                \"name\": \"kocak\",\n                \"color\": \"#423ec3\"\n            },\n            {\n                \"id\": \"03eaa797-3b10-4053-87b5-f46a22d183e4\",\n                \"name\": \"lah\",\n                \"color\": \"#EB5757\"\n            }\n        ],\n        \"inbox_id\": \"4f47a10c-58e1-4d94-8ea2-02bf468d6614\",\n        \"pipeline\": {\n            \"id\": \"6e998418-5527-487b-b808-6c54acf97031\",\n            \"name\": \"warm lead\"\n        },\n        \"contact_id\": \"2020ed10-3b9c-4109-882f-fd61fb3f4713\",\n        \"created_at\": \"2025-10-20T07:57:19.465267+00:00\",\n        \"inbox_name\": \"Putri Shop 2 (Ada Ai)\",\n        \"resolved_at\": null,\n        \"contact_name\": \"LuckyUser_OC1Oj\",\n        \"last_message\": {\n            \"message\": \"saksahsa\",\n            \"created_at\": \"2026-03-11T07:50:42.972+00:00\",\n            \"sent_by_type\": \"agent\"\n        },\n        \"stage_status\": \"assigned\",\n        \"collaborators\": [\n            {\n                \"id\": \"e4d70c07-21fb-42db-8c21-eb4929347a88\",\n                \"name\": \"Hamzah spv\"\n            }\n        ],\n        \"contact_phone\": \"\",\n        \"first_message\": {\n            \"message\": \"\"\n        },\n        \"handled_by_id\": \"34aa8f9c-8b12-4701-8150-d4f180ffb8a9\",\n        \"platform_type\": \"livechat\",\n        \"resolved_by_id\": null,\n        \"additional_data\": null,\n        \"handled_by_name\": \"Indah G.\",\n        \"resolved_by_name\": null,\n        \"last_message_by_human\": {\n            \"message\": \"saksahsa\",\n            \"created_at\": \"2026-03-11T07:50:42.903Z\",\n            \"sent_by_type\": \"agent\"\n        }\n    }\n}"
+                },
+                {
+                  "name": "success",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Authorization",
+                        "value": "api_key {{CEKAT_API_KEY}}",
+                        "type": "text"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{OPENAPI_LOCAL_SERVER}}/api/conversations/:conversation_id",
+                      "host": [
+                        "{{OPENAPI_LOCAL_SERVER}}"
+                      ],
+                      "path": [
+                        "api",
+                        "conversations",
+                        ":conversation_id"
+                      ],
+                      "variable": [
+                        {
+                          "key": "conversation_id",
+                          "value": "3e44c822-fa61-4031-95fa-324751c4e119"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "Text",
+                  "header": [
+                    {
+                      "key": ":status",
+                      "value": 200
+                    },
+                    {
+                      "key": "date",
+                      "value": "Tue, 14 Apr 2026 07:50:18 GMT"
+                    },
+                    {
+                      "key": "content-type",
+                      "value": "application/json; charset=utf-8"
+                    },
+                    {
+                      "key": "content-length",
+                      "value": "434"
+                    },
+                    {
+                      "key": "report-to",
+                      "value": "{\"group\":\"cf-nel\",\"max_age\":604800,\"endpoints\":[{\"url\":\"https://a.nel.cloudflare.com/report/v4?s=BvpHfmy3ByYlFb4FmmjV5ezo9RsOC5UDrBCQFrdvAR6Vd8YQ5tJGRmzG9IaSj1d9aX8EgQg6j5bFiwpqs1my6RCB7jDroY4pKUzDmARz7ZSQbg%2FLPnFYW5ENoJZB7k6B547SXzSTKIH%2B\"}]}"
+                    },
+                    {
+                      "key": "nel",
+                      "value": "{\"report_to\":\"cf-nel\",\"success_fraction\":0.0,\"max_age\":604800}"
+                    },
+                    {
+                      "key": "server",
+                      "value": "cloudflare"
+                    },
+                    {
+                      "key": "access-control-allow-credentials",
+                      "value": "true"
+                    },
+                    {
+                      "key": "content-encoding",
+                      "value": "br"
+                    },
+                    {
+                      "key": "etag",
+                      "value": "W/\"2e5-+x7Ot0vQzczNhP/5S8omff4q/y4\""
+                    },
+                    {
+                      "key": "rndr-id",
+                      "value": "cabb942d-9dc1-493f"
+                    },
+                    {
+                      "key": "vary",
+                      "value": "Origin, Accept-Encoding, Accept-Encoding"
+                    },
+                    {
+                      "key": "x-powered-by",
+                      "value": "Express"
+                    },
+                    {
+                      "key": "x-ratelimit-limit",
+                      "value": "10"
+                    },
+                    {
+                      "key": "x-ratelimit-remaining",
+                      "value": "8"
+                    },
+                    {
+                      "key": "x-ratelimit-reset",
+                      "value": "1776153067"
+                    },
+                    {
+                      "key": "x-render-origin-server",
+                      "value": "Render"
+                    },
+                    {
+                      "key": "cf-cache-status",
+                      "value": "DYNAMIC"
+                    },
+                    {
+                      "key": "cf-ray",
+                      "value": "9ec11e6eecad50c7-CGK"
+                    }
+                  ],
+                  "cookie": [],
+                  "body": "{\n    \"success\": true,\n    \"data\": {\n        \"id\": \"3e44c822-fa61-4031-95fa-324751c4e119\",\n        \"notes\": null,\n        \"labels\": [],\n        \"inbox_id\": \"3f21998a-48b7-4f44-a216-c9c511736b76\",\n        \"pipeline\": {\n            \"id\": \"6242d5ae-9bb9-4e90-9970-1b611c10d9c9\",\n            \"name\": \"Deal\"\n        },\n        \"contact_id\": \"c9301d47-9747-4905-8494-f0c747174cc0\",\n        \"created_at\": \"2026-04-10T08:24:50.209742+00:00\",\n        \"inbox_name\": \"n8n testing\",\n        \"resolved_at\": null,\n        \"contact_name\": \"Krab\",\n        \"last_message\": {\n            \"message\": \"test\",\n            \"created_at\": \"2026-04-14T07:32:31.454+00:00\"\n        },\n        \"stage_status\": \"assigned\",\n        \"collaborators\": [],\n        \"contact_phone\": \"712381231\",\n        \"first_message\": {\n            \"message\": \"\"\n        },\n        \"handled_by_id\": \"969ae741-6d24-4c5e-993a-5cb3f1847e65\",\n        \"platform_type\": \"livechat\",\n        \"resolved_by_id\": null,\n        \"additional_data\": {},\n        \"handled_by_name\": \"Agung\",\n        \"resolved_by_name\": null\n    }\n}"
+                }
+              ]
+            },
+            {
+              "name": "get conversations Copy",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "api_key {{CEKAT_API_KEY}}",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{OPENAPI_LOCAL_SERVER}}/api/conversations?limit=1&page=2",
+                  "host": [
+                    "{{OPENAPI_LOCAL_SERVER}}"
+                  ],
+                  "path": [
+                    "api",
+                    "conversations"
+                  ],
+                  "query": [
+                    {
+                      "key": "limit",
+                      "value": "1"
+                    },
+                    {
+                      "key": "page",
+                      "value": "2"
+                    },
+                    {
+                      "key": "start_date",
+                      "value": "2025-09-01",
+                      "type": "text",
+                      "disabled": true
+                    },
+                    {
+                      "key": "end_date",
+                      "value": "2025-10-08",
+                      "type": "text",
+                      "disabled": true
+                    }
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "update conversation",
+              "request": {
+                "auth": {
+                  "type": "noauth"
+                },
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "api_key {{CEKAT_API_KEY}}",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"assigned_ai_agent\": \"96a7a1c3-0754-4407-a86a-8b8727c8799c\"\n    // \"keep_assigned_ai_agent_on_resolve\": true\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{OPENAPI_LOCAL_SERVER}}/api/conversations/:id",
+                  "host": [
+                    "{{OPENAPI_LOCAL_SERVER}}"
+                  ],
+                  "path": [
+                    "api",
+                    "conversations",
+                    ":id"
+                  ],
+                  "variable": [
+                    {
+                      "key": "id",
+                      "value": "5e31127e-f835-4d9f-95ad-7749de7a54c0"
+                    }
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "Contacts",
+          "item": [
+            {
+              "name": "get contacts",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{OPENAPI_LOCAL_SERVER}}/api/contacts?limit=2&page=1",
+                  "host": [
+                    "{{OPENAPI_LOCAL_SERVER}}"
+                  ],
+                  "path": [
+                    "api",
+                    "contacts"
+                  ],
+                  "query": [
+                    {
+                      "key": "limit",
+                      "value": "2"
+                    },
+                    {
+                      "key": "page",
+                      "value": "1"
+                    }
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "Templates",
+          "item": [
+            {
+              "name": "get templates",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{OPENAPI_LOCAL_SERVER}}/api/templates?page=1&limit=1&start_date=2025-10-01&end_date=2025-10-07",
+                  "host": [
+                    "{{OPENAPI_LOCAL_SERVER}}"
+                  ],
+                  "path": [
+                    "api",
+                    "templates"
+                  ],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "1"
+                    },
+                    {
+                      "key": "start_date",
+                      "value": "2025-10-01"
+                    },
+                    {
+                      "key": "end_date",
+                      "value": "2025-10-07"
+                    }
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "get template price",
+              "request": {
+                "auth": {
+                  "type": "apikey",
+                  "apikey": [
+                    {
+                      "key": "value",
+                      "value": "{{CEKAT_API_KEY}}",
+                      "type": "string"
+                    },
+                    {
+                      "key": "key",
+                      "value": "api_key",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{OPENAPI_LOCAL_SERVER}}/api/templates/pricing?category=marketing&recipient_country_code=62&currency=IDR",
+                  "host": [
+                    "{{OPENAPI_LOCAL_SERVER}}"
+                  ],
+                  "path": [
+                    "api",
+                    "templates",
+                    "pricing"
+                  ],
+                  "query": [
+                    {
+                      "key": "category",
+                      "value": "marketing"
+                    },
+                    {
+                      "key": "recipient_country_code",
+                      "value": "62"
+                    },
+                    {
+                      "key": "currency",
+                      "value": "IDR"
+                    }
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        }
+      ],
+      "description": "# **Description**\n\nThe **Cekat Open API** provides secure and structured access to your business data — including **inboxes**, **templates**, **campaigns**, **conversations**, and other connected resources.\n\nIt allows developers and partners to integrate with the **Cekat platform** to manage customer interactions, synchronize data, and automate workflows.\n\nAll endpoints in this collection are designed to be:\n\n- ✅ **Paginated** for efficient data retrieval.\n    \n- ✅ **Filterable** by date range (`created_at_start`, `created_at_end`).\n    \n- ✅ **Time zone–aware**, returning all timestamps in **Jakarta Time (GMT+7)**, which is **7 hours ahead of UTC**.\n    \n- ✅ **Authenticated** using **Bearer Token** or **API Key**.\n    \n\n# **Base URL**\n\n[<code>https://api.cekat.ai</code>](https://api.cekat.ai)\n\n# **Authentication**\n\nAll requests require one of the following authentication methods:\n\n1. **Bearer Token**\n    \n    `Authorization: Bearer`\n    \n2. **API Key**\n    \n    `api_key:`\n    \n\n# #**Available API Endpoints**\n\nAll endpoints use the base URL:\n\n[<code>https://api.cekat.ai</code>](https://api.cekat.ai)\n\n> \n\n🕒 **Timezone:** All date and time filters use **Jakarta Time (GMT+7)**  \n🔐 **Authorization:** All endpoints support both `api_key` and `Bearer` token authentication.  \n📄 **Pagination:** Most endpoints include `page` and `limit` query parameters.\n\n \n  \n\n| **Endpoint** | **Method** | **Description** | **Supports** |\n| --- | --- | --- | --- |\n| `/api/messages` | **GET** | Retrieve paginated messages for a conversation. Supports filtering by conversation ID, message date, and ad messages. | Pagination, Date Filter, `is_ads`, `conversation_id` |\n| `/api/messages/summary/ai_credits` | **GET** | Get AI message usage summary (total AI messages, total credits used, total conversations). | Date Range Filter |\n| `/api/agents` | **GET** | Retrieve all agents within a business. Supports pagination and date filters. | Pagination, Date Filter |\n| `/api/inboxes` | **GET** | Get connected inboxes (WhatsApp, Instagram, Messenger, Livechat, etc.) for a business. | Pagination, Date Filter |\n| `/api/campaigns` | **GET** | Retrieve a paginated list of broadcast message campaigns created by the business. | Pagination, Date Filter |\n| `/api/campaigns/:id/messages` | **GET** | Get messages belonging to a specific campaign, including delivery and reply metrics. | Pagination |\n| `/api/agent_assignments` | **GET** | Retrieve which agent handled which conversation (assignment tracking). | Pagination, Date Filter |\n| `/api/conversations` | **GET** | Get a list of conversations between contacts and agents or AI. | Pagination, Date Filter |\n| `/api/contacts` | **GET** | Retrieve paginated contact data, including inboxes, platform type, and customizable additional data. | Pagination, Date Filter |\n| `/api/templates` | **GET** | Retrieve a list of message templates for a business (e.g., WhatsApp templates). | Pagination, Date Range Filter |\n\n## #**Notes**\n\n- All timestamps and filters follow **Jakarta (GMT+7)** timezone.\n    \n- Common query parameters for pagination:\n    \n    `?page=&limit=`\n    \n- Common query parameters for date filtering:\n    \n    `?start_date=YYYY-MM-DD&end_date=YYYY-MM-DD`\n    \n- { \"success\": true, \"data\": \\[...\\], \"metadata\": { \"pagination\": { ... }, \"metrics\": { ... } // (if applicable) }}\n    \n\n# #**Time Zone Information**\n\nAll `created_at` and `updated_at` fields are displayed in **Jakarta Time (GMT+7)**.  \nFor example:\n\n`Jakarta: 2025-10-09T08:00:00+07:00 -> UTC: 2025-10-09T01:00:00Z`"
+    },
+    {
+      "name": "Business data",
+      "request": {
+        "auth": {
+          "type": "apikey",
+          "apikey": [
+            {
+              "key": "value",
+              "value": "{{CEKAT_API_KEY}}",
+              "type": "string"
+            },
+            {
+              "key": "key",
+              "value": "api_key",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{OPENAPI_LOCAL_SERVER}}/businesses",
+          "host": [
+            "{{OPENAPI_LOCAL_SERVER}}"
+          ],
+          "path": [
+            "businesses"
+          ]
+        },
+        "description": "### GET /business\n\nThis endpoint retrieves business information.\n\n#### Request Body\n\nThis request does not require a request body.\n\n#### Response\n\n- Status: 200\n    \n- Content-Type: application/json\n    \n\n``` json\n{\n    \"success\": true,\n    \"status_code\": 200,\n    \"data\": {\n        \"id\": \"\",\n        \"created_at\": \"\",\n        \"name\": \"\",\n        \"email\": \"\",\n        \"phone_num\": \"\",\n        \"package_type\": \"\",\n        \"package_start_date\": \"\",\n        \"package_exp_date\": \"\",\n        \"is_expired\": false,\n        \"total_used_chat_credit_per_month\": 0,\n        \"chat_credit_topup\": 0,\n        \"total_used_convo\": 0,\n        \"convo_credit_topup\": 0,\n        \"open_api_key\": \"\"\n    }\n}\n\n ```\n\nThe response contains a \"success\" flag, \"status_code\", and \"data\" object with various business details including ID, name, email, phone number, package information, expiration status, and credit usage."
+      },
+      "response": [
+        {
+          "name": "Business data",
+          "originalRequest": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{OPENAPI_LOCAL_SERVER}}/businesses",
+              "host": [
+                "{{OPENAPI_LOCAL_SERVER}}"
+              ],
+              "path": [
+                "businesses"
+              ]
+            }
+          },
+          "_postman_previewlanguage": "json",
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json",
+              "description": "",
+              "type": "text"
+            }
+          ],
+          "cookie": [],
+          "body": "{\r\n    \"success\": true,\r\n    \"status_code\": 200,\r\n    \"data\": {\r\n        \"id\": \"12345\",\r\n        \"created_at\": \"2024-02-29 04:52:40.916283+00\",\r\n        \"name\": \"business name\",\r\n        \"email\": \"business email\",\r\n        \"phone_num\": \"088888888\",\r\n        \"package_type\": \"free\",\r\n        \"package_start_date\": \"2024-09-03 10:51:25.529+00\",\r\n        \"package_exp_date\": \"2024-09-15 10:51:25.529+00\",\r\n        \"is_expired\": false,\r\n        \"total_used_chat_credit_per_month\": 0,\r\n        \"chat_credit_topup\": 0,\r\n        \"total_used_convo\": 0,\r\n        \"convo_credit_topup\": 0,\r\n        \"open_api_key\": \"api_key\"\r\n    }\r\n}"
+        }
+      ]
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "requests": {},
+        "exec": [
+          ""
+        ]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "requests": {},
+        "exec": [
+          ""
+        ]
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "OPENAPI_LOCAL_SERVER",
+      "value": ""
+    },
+    {
+      "key": "api_key",
+      "value": ""
+    }
+  ]
+}
