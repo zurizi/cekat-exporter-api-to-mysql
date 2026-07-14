@@ -72,6 +72,12 @@ cd /path/ke/folder/cekat-data
 chmod +x run_cekat_import.sh check_cekat_import_progress.sh
 ```
 
+Jika database sudah ada dari versi script lama, update schema tanpa memanggil API:
+
+```bash
+./run_cekat_import.sh migrate
+```
+
 Import data utama:
 
 ```bash
@@ -92,7 +98,7 @@ Kalau sering kena rate-limit, pakai mode lambat:
 ./run_cekat_import.sh slow-messages
 ```
 
-Mode messages aman dijalankan berkali-kali. Script akan melanjutkan conversation yang belum tercatat sukses di `endpoint_results`.
+Mode messages aman dijalankan berkali-kali. Script akan melanjutkan conversation yang belum tercatat sukses di `endpoint_results`. Jika proses putus di tengah page, script menyimpan posisi terakhir di `import_progress` dan tetap dedupe row yang sudah ada di tabel `messages`.
 
 ## Cek Progres
 
@@ -124,6 +130,18 @@ WHERE NOT EXISTS (
 "
 ```
 
+Progress page messages terakhir:
+
+```bash
+mysql -h127.0.0.1 -uroot cekat_collection_export -e "
+SELECT endpoint_key, status, current_page, total_pages, rows_seen, rows_inserted, updated_at
+FROM import_progress
+WHERE endpoint_key LIKE 'messages_by_conversation:%'
+ORDER BY updated_at DESC
+LIMIT 20;
+"
+```
+
 ## Relasi Data
 
 Conversation ID ada di:
@@ -138,6 +156,8 @@ Relasi utama:
 contacts.external_id = conversations.contact_id
 messages.conversation_id = conversations.external_id
 ```
+
+Jumlah contacts bisa lebih banyak daripada conversations. Contacts adalah daftar contact yang tersimpan, sedangkan conversations adalah daftar percakapan yang tersedia dari endpoint conversation.
 
 Contoh query:
 
@@ -164,6 +184,8 @@ Import messages melakukan request per `conversation_id`, jadi jumlah request bis
 - tunggu beberapa menit, lalu jalankan lagi `./run_cekat_import.sh messages`
 - atau gunakan `./run_cekat_import.sh slow-messages`
 - jangan drop database saat hanya ingin melanjutkan messages
+- progress terakhir tersimpan di `import_progress`
+- history per page tersimpan di `import_progress_events`
 
 ## Reset Database
 

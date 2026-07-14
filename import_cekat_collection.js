@@ -173,6 +173,57 @@ CREATE TABLE IF NOT EXISTS endpoint_results (
   INDEX idx_import_run_id (import_run_id),
   INDEX idx_endpoint_key (endpoint_key)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE IF NOT EXISTS import_progress (
+  endpoint_key VARCHAR(191) PRIMARY KEY,
+  import_run_id BIGINT NULL,
+  table_name VARCHAR(191) NULL,
+  source_method VARCHAR(20) NOT NULL,
+  source_endpoint VARCHAR(500) NOT NULL,
+  requested_url VARCHAR(1000) NULL,
+  status VARCHAR(30) NOT NULL,
+  source_status_code INT NULL,
+  current_page INT NULL,
+  total_pages INT NULL,
+  current_items INT NULL,
+  total_items BIGINT NULL,
+  cursor_id VARCHAR(191) NULL,
+  cursor_ts VARCHAR(100) NULL,
+  rows_seen BIGINT NOT NULL DEFAULT 0,
+  rows_inserted BIGINT NOT NULL DEFAULT 0,
+  last_external_id VARCHAR(191) NULL,
+  error TEXT NULL,
+  created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  INDEX idx_status (status),
+  INDEX idx_table_name (table_name)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE IF NOT EXISTS import_progress_events (
+  id BIGINT AUTO_INCREMENT PRIMARY KEY,
+  import_run_id BIGINT NULL,
+  endpoint_key VARCHAR(191) NOT NULL,
+  table_name VARCHAR(191) NULL,
+  source_method VARCHAR(20) NOT NULL,
+  source_endpoint VARCHAR(500) NOT NULL,
+  requested_url VARCHAR(1000) NULL,
+  status VARCHAR(30) NOT NULL,
+  source_status_code INT NULL,
+  page_number INT NULL,
+  total_pages INT NULL,
+  current_items INT NULL,
+  total_items BIGINT NULL,
+  cursor_id VARCHAR(191) NULL,
+  cursor_ts VARCHAR(100) NULL,
+  rows_seen BIGINT NOT NULL DEFAULT 0,
+  rows_inserted BIGINT NOT NULL DEFAULT 0,
+  last_external_id VARCHAR(191) NULL,
+  error TEXT NULL,
+  created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  INDEX idx_endpoint_key (endpoint_key),
+  INDEX idx_import_run_id (import_run_id),
+  INDEX idx_status (status)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 `);
 
   for (const table of TABLES) {
@@ -265,6 +316,119 @@ INSERT INTO endpoint_results (
   ${sqlString(status)},
   ${statusCode == null ? "NULL" : Number(statusCode)},
   ${Number(totalRows || 0)},
+  ${sqlString(error)}
+);
+`);
+}
+
+async function loadProgress(endpointKey) {
+  const rows = await mysqlExec(`
+SELECT status, current_page, total_pages, rows_seen, rows_inserted, cursor_id, cursor_ts
+FROM import_progress
+WHERE endpoint_key = ${sqlString(endpointKey)}
+LIMIT 1;
+`);
+  const line = rows.split(/\r?\n/).map((value) => value.trim()).find(Boolean);
+  if (!line) return null;
+
+  const [status, currentPage, totalPages, rowsSeen, rowsInserted, cursorId, cursorTs] = line.split("\t");
+  return {
+    status,
+    currentPage: Number(currentPage || 0),
+    totalPages: Number(totalPages || 0),
+    rowsSeen: Number(rowsSeen || 0),
+    rowsInserted: Number(rowsInserted || 0),
+    cursor: cursorId && cursorTs ? { cursor_id: cursorId, cursor_ts: cursorTs } : null,
+  };
+}
+
+async function recordProgress({
+  runId,
+  endpointKey,
+  tableName,
+  method,
+  sourceEndpoint,
+  requestedUrl,
+  status,
+  statusCode,
+  page,
+  totalPages,
+  currentItems,
+  totalItems,
+  cursor,
+  rowsSeen,
+  rowsInserted,
+  lastExternalId,
+  error,
+}) {
+  await mysqlExec(`
+INSERT INTO import_progress (
+  endpoint_key, import_run_id, table_name, source_method, source_endpoint,
+  requested_url, status, source_status_code, current_page, total_pages,
+  current_items, total_items, cursor_id, cursor_ts, rows_seen, rows_inserted,
+  last_external_id, error
+) VALUES (
+  ${sqlString(endpointKey)},
+  ${Number(runId)},
+  ${sqlString(tableName)},
+  ${sqlString(method)},
+  ${sqlString(sourceEndpoint)},
+  ${sqlString(requestedUrl)},
+  ${sqlString(status)},
+  ${statusCode == null ? "NULL" : Number(statusCode)},
+  ${page == null ? "NULL" : Number(page)},
+  ${totalPages == null ? "NULL" : Number(totalPages)},
+  ${currentItems == null ? "NULL" : Number(currentItems)},
+  ${totalItems == null ? "NULL" : Number(totalItems)},
+  ${sqlString(cursor?.cursor_id || null)},
+  ${sqlString(cursor?.cursor_ts || null)},
+  ${Number(rowsSeen || 0)},
+  ${Number(rowsInserted || 0)},
+  ${sqlString(lastExternalId || null)},
+  ${sqlString(error)}
+)
+ON DUPLICATE KEY UPDATE
+  import_run_id = VALUES(import_run_id),
+  table_name = VALUES(table_name),
+  source_method = VALUES(source_method),
+  source_endpoint = VALUES(source_endpoint),
+  requested_url = VALUES(requested_url),
+  status = VALUES(status),
+  source_status_code = VALUES(source_status_code),
+  current_page = VALUES(current_page),
+  total_pages = VALUES(total_pages),
+  current_items = VALUES(current_items),
+  total_items = VALUES(total_items),
+  cursor_id = VALUES(cursor_id),
+  cursor_ts = VALUES(cursor_ts),
+  rows_seen = VALUES(rows_seen),
+  rows_inserted = VALUES(rows_inserted),
+  last_external_id = VALUES(last_external_id),
+  error = VALUES(error);
+
+INSERT INTO import_progress_events (
+  import_run_id, endpoint_key, table_name, source_method, source_endpoint,
+  requested_url, status, source_status_code, page_number, total_pages,
+  current_items, total_items, cursor_id, cursor_ts, rows_seen, rows_inserted,
+  last_external_id, error
+) VALUES (
+  ${Number(runId)},
+  ${sqlString(endpointKey)},
+  ${sqlString(tableName)},
+  ${sqlString(method)},
+  ${sqlString(sourceEndpoint)},
+  ${sqlString(requestedUrl)},
+  ${sqlString(status)},
+  ${statusCode == null ? "NULL" : Number(statusCode)},
+  ${page == null ? "NULL" : Number(page)},
+  ${totalPages == null ? "NULL" : Number(totalPages)},
+  ${currentItems == null ? "NULL" : Number(currentItems)},
+  ${totalItems == null ? "NULL" : Number(totalItems)},
+  ${sqlString(cursor?.cursor_id || null)},
+  ${sqlString(cursor?.cursor_ts || null)},
+  ${Number(rowsSeen || 0)},
+  ${Number(rowsInserted || 0)},
+  ${sqlString(lastExternalId || null)},
   ${sqlString(error)}
 );
 `);
@@ -415,6 +579,48 @@ function nextCursor(json) {
   };
 }
 
+function paginationMeta(json) {
+  const pagination =
+    json?.metadata?.pagination ||
+    json?.meta?.pagination ||
+    json?.pagination ||
+    json?.data?.metadata?.pagination ||
+    json?.data?.meta?.pagination ||
+    null;
+
+  if (!pagination || typeof pagination !== "object") {
+    return {
+      totalPages: null,
+      currentItems: null,
+      totalItems: null,
+    };
+  }
+
+  return {
+    totalPages: Number(
+      pagination.total_page ||
+        pagination.total_pages ||
+        pagination.last_page ||
+        pagination.totalPages ||
+        0
+    ) || null,
+    currentItems: Number(
+      pagination.current_items ||
+        pagination.per_page ||
+        pagination.count ||
+        pagination.currentItems ||
+        0
+    ) || null,
+    totalItems: Number(
+      pagination.total_items ||
+        pagination.total ||
+        pagination.total_count ||
+        pagination.totalItems ||
+        0
+    ) || null,
+  };
+}
+
 function externalId(row) {
   if (!row || typeof row !== "object" || Array.isArray(row)) return null;
   return (
@@ -486,12 +692,57 @@ async function ensureColumns(table, columns) {
   tableColumns.set(table, existing);
 }
 
+async function filterNewRows(table, sourceEndpoint, rows) {
+  const seenInBatch = new Set();
+  const ids = [];
+  const byId = new Map();
+  const rowsWithoutId = [];
+
+  for (const row of rows) {
+    const id = externalId(row);
+    if (!id) {
+      rowsWithoutId.push(row);
+      continue;
+    }
+
+    const idString = String(id);
+    if (seenInBatch.has(idString)) continue;
+    seenInBatch.add(idString);
+    ids.push(idString);
+    byId.set(idString, row);
+  }
+
+  if (ids.length === 0) return rowsWithoutId;
+
+  const existingRows = await mysqlExec(`
+SELECT external_id
+FROM ${sqlIdent(table)}
+WHERE source_endpoint = ${sqlString(sourceEndpoint)}
+  AND external_id IN (${ids.map(sqlString).join(", ")});
+`);
+  const existing = new Set(
+    existingRows
+      .split(/\r?\n/)
+      .map((line) => line.trim())
+      .filter(Boolean)
+  );
+
+  const newRows = [];
+  for (const id of ids) {
+    if (!existing.has(id)) newRows.push(byId.get(id));
+  }
+  return [...newRows, ...rowsWithoutId];
+}
+
 async function insertRows({ runId, table, sourceEndpoint, method, statusCode, rows }) {
   if (!rows || rows.length === 0) return 0;
 
-  const normalizedRows = rows.map((row) =>
+  const normalizedRowsAll = rows.map((row) =>
     row && typeof row === "object" && !Array.isArray(row) ? row : { value: row }
   );
+  const normalizedRows = await filterNewRows(table, sourceEndpoint, normalizedRowsAll);
+  if (normalizedRows.length === 0) return 0;
+
   const allColumns = {};
   for (const row of normalizedRows) {
     for (const [column, value] of Object.entries(primitiveColumns(row))) {
@@ -541,12 +792,34 @@ async function insertRows({ runId, table, sourceEndpoint, method, statusCode, ro
 }
 
 async function importEndpoint(runId, config) {
+  const method = config.method || "GET";
+  const limit = config.limit || DEFAULT_LIMIT;
+
   if (config.skip) {
+    await recordProgress({
+      runId,
+      endpointKey: config.key,
+      tableName: config.table,
+      method,
+      sourceEndpoint: config.path,
+      requestedUrl: null,
+      status: "skipped",
+      statusCode: null,
+      page: null,
+      totalPages: null,
+      currentItems: null,
+      totalItems: null,
+      cursor: null,
+      rowsSeen: 0,
+      rowsInserted: 0,
+      lastExternalId: null,
+      error: config.skip,
+    });
     await recordEndpointResult({
       runId,
       endpointKey: config.key,
       tableName: config.table,
-      method: config.method || "GET",
+      method,
       sourceEndpoint: config.path,
       requestedUrl: null,
       status: "skipped",
@@ -557,21 +830,50 @@ async function importEndpoint(runId, config) {
     return { status: "skipped", rows: 0 };
   }
 
+  const existingProgress = config.resumeProgress ? await loadProgress(config.key) : null;
   let totalRows = 0;
+  let totalSeen = 0;
   let lastStatusCode = null;
   let lastUrl = null;
-  const limit = config.limit || DEFAULT_LIMIT;
+  let lastExternalId = null;
+  let lastPage = existingProgress?.currentPage || null;
+  let lastTotalPages = existingProgress?.totalPages || null;
+  let lastCurrentItems = null;
+  let lastTotalItems = null;
+  let lastCursor = existingProgress?.cursor || null;
+
+  await recordProgress({
+    runId,
+    endpointKey: config.key,
+    tableName: config.table,
+    method,
+    sourceEndpoint: config.path,
+    requestedUrl: null,
+    status: "running",
+    statusCode: null,
+    page: existingProgress?.currentPage || null,
+    totalPages: existingProgress?.totalPages || null,
+    currentItems: null,
+    totalItems: null,
+    cursor: existingProgress?.cursor || null,
+    rowsSeen: existingProgress?.rowsSeen || 0,
+    rowsInserted: existingProgress?.rowsInserted || 0,
+    lastExternalId: null,
+    error: null,
+  });
 
   try {
     if (config.cursorPaginated) {
       const seenPageSignatures = new Set();
-      let cursor = null;
-      for (let page = 1; page <= MAX_PAGES; page += 1) {
+      let cursor = existingProgress?.cursor || null;
+      const startPage = existingProgress?.currentPage ? existingProgress.currentPage + 1 : 1;
+
+      for (let page = startPage; page <= MAX_PAGES; page += 1) {
         const query = { ...(config.query || {}), limit };
         if (cursor) Object.assign(query, cursor);
 
         const result = await apiRequest({
-          method: config.method || "GET",
+          method,
           path: config.path,
           auth: config.auth,
           query,
@@ -581,34 +883,62 @@ async function importEndpoint(runId, config) {
         lastUrl = result.url;
 
         const rows = pickRecordContainer(result.json);
+        totalSeen += rows.length;
         const signature = pageSignature(rows);
-        if (page > 1 && seenPageSignatures.has(signature)) {
+        if (page > startPage && seenPageSignatures.has(signature)) {
           console.warn(`[pagination] ${config.key} cursor page=${page} duplicates an earlier page; stopping.`);
           break;
         }
         seenPageSignatures.add(signature);
 
-        totalRows += await insertRows({
+        const inserted = await insertRows({
           runId,
           table: config.table,
           sourceEndpoint: config.path,
-          method: config.method || "GET",
+          method,
           statusCode: result.statusCode,
           rows,
         });
+        totalRows += inserted;
         if (config.collect) config.collect(rows);
-        console.log(`[page] ${config.key} cursor_page=${page} rows=${rows.length}`);
-
+        lastExternalId = rows.length ? externalId(rows[rows.length - 1]) : lastExternalId;
         cursor = nextCursor(result.json);
+        lastPage = page;
+        lastCurrentItems = rows.length;
+        lastCursor = cursor;
+
+        await recordProgress({
+          runId,
+          endpointKey: config.key,
+          tableName: config.table,
+          method,
+          sourceEndpoint: config.path,
+          requestedUrl: result.url,
+          status: "page_done",
+          statusCode: result.statusCode,
+          page,
+          totalPages: null,
+          currentItems: rows.length,
+          totalItems: null,
+          cursor,
+          rowsSeen: (existingProgress?.rowsSeen || 0) + totalSeen,
+          rowsInserted: (existingProgress?.rowsInserted || 0) + totalRows,
+          lastExternalId,
+          error: null,
+        });
+        console.log(`[page] ${config.key} cursor_page=${page} rows=${rows.length} inserted=${inserted}`);
+
         if (!cursor || rows.length === 0) break;
         await sleep(REQUEST_DELAY_MS);
       }
     } else if (config.paginated) {
       const seenPageSignatures = new Set();
-      for (let page = 1; page <= MAX_PAGES; page += 1) {
+      const startPage = existingProgress?.currentPage ? existingProgress.currentPage + 1 : 1;
+
+      for (let page = startPage; page <= MAX_PAGES; page += 1) {
         const query = { ...(config.query || {}), page, limit };
         const result = await apiRequest({
-          method: config.method || "GET",
+          method,
           path: config.path,
           auth: config.auth,
           query,
@@ -618,30 +948,58 @@ async function importEndpoint(runId, config) {
         lastUrl = result.url;
 
         const rows = pickRecordContainer(result.json);
+        totalSeen += rows.length;
         const signature = pageSignature(rows);
-        if (page > 1 && seenPageSignatures.has(signature)) {
+        if (page > startPage && seenPageSignatures.has(signature)) {
           console.warn(`[pagination] ${config.key} page=${page} duplicates an earlier page; stopping.`);
           break;
         }
         seenPageSignatures.add(signature);
 
-        totalRows += await insertRows({
+        const inserted = await insertRows({
           runId,
           table: config.table,
           sourceEndpoint: config.path,
-          method: config.method || "GET",
+          method,
           statusCode: result.statusCode,
           rows,
         });
+        totalRows += inserted;
         if (config.collect) config.collect(rows);
-        console.log(`[page] ${config.key} page=${page} rows=${rows.length}`);
+        const meta = paginationMeta(result.json);
+        lastExternalId = rows.length ? externalId(rows[rows.length - 1]) : lastExternalId;
+        lastPage = page;
+        lastTotalPages = meta.totalPages;
+        lastCurrentItems = meta.currentItems || rows.length;
+        lastTotalItems = meta.totalItems;
+
+        await recordProgress({
+          runId,
+          endpointKey: config.key,
+          tableName: config.table,
+          method,
+          sourceEndpoint: config.path,
+          requestedUrl: result.url,
+          status: "page_done",
+          statusCode: result.statusCode,
+          page,
+          totalPages: meta.totalPages,
+          currentItems: meta.currentItems || rows.length,
+          totalItems: meta.totalItems,
+          cursor: null,
+          rowsSeen: (existingProgress?.rowsSeen || 0) + totalSeen,
+          rowsInserted: (existingProgress?.rowsInserted || 0) + totalRows,
+          lastExternalId,
+          error: null,
+        });
+        console.log(`[page] ${config.key} page=${page} rows=${rows.length} inserted=${inserted}`);
 
         if (!hasMoreByMetadata(result.json, page, limit, rows.length)) break;
         await sleep(REQUEST_DELAY_MS);
       }
     } else {
       const result = await apiRequest({
-        method: config.method || "GET",
+        method,
         path: config.path,
         auth: config.auth,
         query: config.query,
@@ -650,22 +1008,67 @@ async function importEndpoint(runId, config) {
       lastStatusCode = result.statusCode;
       lastUrl = result.url;
       const rows = pickRecordContainer(result.json);
+      totalSeen += rows.length;
       totalRows += await insertRows({
         runId,
         table: config.table,
         sourceEndpoint: config.path,
-        method: config.method || "GET",
+        method,
         statusCode: result.statusCode,
         rows,
       });
       if (config.collect) config.collect(rows);
+      lastExternalId = rows.length ? externalId(rows[rows.length - 1]) : null;
+      lastPage = 1;
+      lastTotalPages = 1;
+      lastCurrentItems = rows.length;
+      lastTotalItems = rows.length;
+
+      await recordProgress({
+        runId,
+        endpointKey: config.key,
+        tableName: config.table,
+        method,
+        sourceEndpoint: config.path,
+        requestedUrl: result.url,
+        status: "page_done",
+        statusCode: result.statusCode,
+        page: 1,
+        totalPages: 1,
+        currentItems: rows.length,
+        totalItems: rows.length,
+        cursor: null,
+        rowsSeen: totalSeen,
+        rowsInserted: totalRows,
+        lastExternalId,
+        error: null,
+      });
     }
 
+    await recordProgress({
+      runId,
+      endpointKey: config.key,
+      tableName: config.table,
+      method,
+      sourceEndpoint: config.path,
+      requestedUrl: lastUrl,
+      status: "success",
+      statusCode: lastStatusCode,
+      page: lastPage,
+      totalPages: lastTotalPages,
+      currentItems: lastCurrentItems,
+      totalItems: lastTotalItems,
+      cursor: lastCursor,
+      rowsSeen: (existingProgress?.rowsSeen || 0) + totalSeen,
+      rowsInserted: (existingProgress?.rowsInserted || 0) + totalRows,
+      lastExternalId,
+      error: null,
+    });
     await recordEndpointResult({
       runId,
       endpointKey: config.key,
       tableName: config.table,
-      method: config.method || "GET",
+      method,
       sourceEndpoint: config.path,
       requestedUrl: lastUrl,
       status: "success",
@@ -675,11 +1078,30 @@ async function importEndpoint(runId, config) {
     });
     return { status: "success", rows: totalRows };
   } catch (error) {
+    await recordProgress({
+      runId,
+      endpointKey: config.key,
+      tableName: config.table,
+      method,
+      sourceEndpoint: config.path,
+      requestedUrl: error.url || lastUrl,
+      status: "failed",
+      statusCode: error.statusCode || lastStatusCode,
+      page: lastPage,
+      totalPages: lastTotalPages,
+      currentItems: lastCurrentItems,
+      totalItems: lastTotalItems,
+      cursor: lastCursor,
+      rowsSeen: (existingProgress?.rowsSeen || 0) + totalSeen,
+      rowsInserted: (existingProgress?.rowsInserted || 0) + totalRows,
+      lastExternalId,
+      error: error.message,
+    });
     await recordEndpointResult({
       runId,
       endpointKey: config.key,
       tableName: config.table,
-      method: config.method || "GET",
+      method,
       sourceEndpoint: config.path,
       requestedUrl: error.url || lastUrl,
       status: "failed",
@@ -905,6 +1327,7 @@ function messageByConversationConfigs() {
       path: "/api/messages",
       auth: "apikey",
       paginated: true,
+      resumeProgress: true,
       query: {
         conversation_id: id,
       },
@@ -939,12 +1362,17 @@ function validateCollectionExists() {
 
 async function main() {
   validateCollectionExists();
-  if (!apiKey) throw new Error("Missing cekat_api_key in .env");
+  if (!apiKey && IMPORT_MODE !== "migrate") throw new Error("Missing cekat_api_key in .env");
 
   console.log(`Using base URL: ${baseUrl}`);
   console.log(`Using database: ${DB_NAME}`);
 
   await initDatabase();
+  if (IMPORT_MODE === "migrate") {
+    console.log("Database schema is up to date.");
+    return;
+  }
+
   const runId = await startRun();
   activeRunId = runId;
   const counts = { success: 0, failed: 0, skipped: 0, rows: 0 };

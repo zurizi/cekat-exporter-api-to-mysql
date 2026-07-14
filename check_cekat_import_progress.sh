@@ -22,7 +22,7 @@ ORDER BY id DESC
 LIMIT 5;
 
 SELECT 'row_counts' AS section, '' AS metric, '' AS value;
-SELECT 'businesses' AS table_name, COUNT(*) AS rows FROM businesses UNION ALL
+SELECT 'businesses' AS table_name, COUNT(*) AS row_count FROM businesses UNION ALL
 SELECT 'inboxes', COUNT(*) FROM inboxes UNION ALL
 SELECT 'templates', COUNT(*) FROM templates UNION ALL
 SELECT 'messages', COUNT(*) FROM messages UNION ALL
@@ -48,6 +48,22 @@ SELECT
      WHERE er.endpoint_key = CONCAT('messages_by_conversation:', c.external_id)
        AND er.status = 'success'
    )) AS pending_conversations;
+
+SELECT 'messages_page_progress' AS section, '' AS metric, '' AS value;
+SELECT
+  endpoint_key,
+  status,
+  current_page,
+  total_pages,
+  current_items,
+  total_items,
+  rows_seen,
+  rows_inserted,
+  updated_at
+FROM import_progress
+WHERE endpoint_key LIKE 'messages_by_conversation:%'
+ORDER BY updated_at DESC
+LIMIT 20;
 
 SELECT 'recent_non_success_endpoints' AS section, '' AS metric, '' AS value;
 SELECT endpoint_key, status, total_rows, LEFT(error, 180) AS error

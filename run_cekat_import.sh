@@ -34,6 +34,9 @@ Usage:
   ./run_cekat_import.sh status
       Tampilkan ringkasan row dan pending messages.
 
+  ./run_cekat_import.sh migrate
+      Buat/update schema database tanpa memanggil API.
+
 Before running:
   cp .env.example .env
   Edit .env dan isi cekat_api_key + konfigurasi MySQL.
@@ -80,6 +83,12 @@ case "$MODE" in
   status)
     require_file ".env"
     ./check_cekat_import_progress.sh
+    ;;
+
+  migrate)
+    require_file ".env"
+    require_file "import_cekat_collection.js"
+    IMPORT_MODE=migrate node import_cekat_collection.js
     ;;
 
   help|--help|-h)

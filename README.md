@@ -94,8 +94,9 @@ Wrapper `run_cekat_import.sh` menyediakan mode:
 | `messages` | Resume import messages dari `conversation_id` yang sudah ada di tabel `conversations`. |
 | `slow-messages` | Sama seperti `messages`, tapi delay lebih lambat untuk mengurangi rate-limit. |
 | `status` | Menampilkan ringkasan progress import. |
+| `migrate` | Membuat/update schema database tanpa memanggil API. |
 
-`messages` dan `slow-messages` aman dijalankan berulang. Script memakai tabel `endpoint_results` untuk mengetahui conversation mana yang sudah sukses diambil messages-nya.
+`messages` dan `slow-messages` aman dijalankan berulang. Script memakai tabel `endpoint_results` untuk mengetahui conversation mana yang sudah sukses diambil messages-nya. Jika proses putus di tengah page, script memakai `import_progress.current_page` sebagai titik resume dan tetap melakukan dedupe terhadap row yang sudah tersimpan.
 
 ## Database
 
@@ -111,6 +112,8 @@ Tabel metadata:
 | --- | --- |
 | `import_runs` | Riwayat run import |
 | `endpoint_results` | Status setiap endpoint/request |
+| `import_progress` | State progress terakhir per endpoint, termasuk page/cursor terakhir |
+| `import_progress_events` | History progress per page/request |
 
 Tabel data:
 
@@ -163,6 +166,8 @@ contacts.external_id = conversations.contact_id
 messages.conversation_id = conversations.external_id
 ```
 
+Jumlah `contacts` bisa lebih banyak daripada `conversations`. Itu normal karena contacts adalah daftar contact yang tersimpan, sedangkan conversations adalah daftar percakapan yang tersedia dari endpoint conversation.
+
 Contoh query:
 
 ```sql
@@ -204,6 +209,9 @@ atau mode lambat:
 ```
 
 - Jangan drop database kalau hanya ingin melanjutkan import messages.
+- Progress messages tersimpan di `import_progress` dengan key `messages_by_conversation:<conversation_id>`.
+- History per page tersimpan di `import_progress_events`.
+- Jika run putus, jalankan lagi mode `messages`; script akan lanjut dari progress terakhir dan tetap cross-check row existing agar tidak duplicate.
 - Jika perlu reset total:
 
 ```bash
@@ -227,12 +235,30 @@ Cek jumlah data:
 ./run_cekat_import.sh status
 ```
 
+Jika database lama belum punya tabel progress, jalankan:
+
+```bash
+./run_cekat_import.sh migrate
+```
+
 Cek messages:
 
 ```bash
 mysql -h127.0.0.1 -uroot cekat_collection_export -e "
 SELECT COUNT(*) total_messages, COUNT(DISTINCT conversation_id) conversations_with_messages
 FROM messages;
+"
+```
+
+Cek page progress messages terakhir:
+
+```bash
+mysql -h127.0.0.1 -uroot cekat_collection_export -e "
+SELECT endpoint_key, status, current_page, total_pages, rows_seen, rows_inserted, updated_at
+FROM import_progress
+WHERE endpoint_key LIKE 'messages_by_conversation:%'
+ORDER BY updated_at DESC
+LIMIT 20;
 "
 ```
 
