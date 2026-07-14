@@ -1022,7 +1022,7 @@ async function importEndpoint(runId, config) {
       lastUrl = result.url;
       const rows = pickRecordContainer(result.json);
       totalSeen += rows.length;
-      totalRows += await insertRows({
+      const inserted = await insertRows({
         runId,
         table: config.table,
         sourceEndpoint: config.path,
@@ -1030,6 +1030,7 @@ async function importEndpoint(runId, config) {
         statusCode: result.statusCode,
         rows,
       });
+      totalRows += inserted;
       if (config.collect) config.collect(rows);
       lastExternalId = rows.length ? externalId(rows[rows.length - 1]) : null;
       lastPage = 1;
@@ -1056,6 +1057,7 @@ async function importEndpoint(runId, config) {
         lastExternalId,
         error: null,
       });
+      console.log(`[page] ${config.key} page=1 rows=${rows.length} inserted=${inserted}`);
     }
 
     await recordProgress({
